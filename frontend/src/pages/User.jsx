@@ -2,11 +2,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import requireAuthu from "../utils/authuser";
+// import requireAuthu from "../utils/authuser";
 import "react-toastify/dist/ReactToastify.css";
 import "../User/assets/css/User.css";
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+
 
 function User() {
 
@@ -18,18 +18,20 @@ function User() {
   const [sigadd, setAdd]=useState("");
   const[sigcon,setCon]=useState("");
   const[sigpin,setPin]=useState("");
-  const [sessionExpiration, setSessionExpiration] = useState(null);
   const [currentStep, setCurrentStep] = useState(1);
 
 
   // const [data, setData] = useState({ name: 'John', age: 30 });
   const navigate = useNavigate();
   useEffect(() => {
-    if (sessionExpiration && Date.now() > sessionExpiration) {
-      localStorage.removeItem("isLoggedIn");
-      setSessionExpiration(null);
-    }
-  }, [sessionExpiration]);
+    axios
+    .get("http://localhost:5000/api/users/check", { withCredentials: true })
+    .then((response) => {console.log("dash");
+      if (response.data.message === "user not login"){}
+      else if(response.data.message === "user already login"){navigate("/user/dashboard")}
+      });
+  }, []);
+ 
 
   const handlelogin = async (event) => {
     event.preventDefault();
@@ -42,12 +44,9 @@ function User() {
         .post("http://localhost:5000/api/users/login", {
           email: logemail,
           password: logpass,
-        })
+        },{ withCredentials: true })
         .then((response) => {
           if (response.data.message === "Successfully logged in") {
-            localStorage.setItem("isLoggedIn", true);
-            // localStorage.setItem('userDetail',response.data.user)
-            setSessionExpiration(Date.now() + 3600000);
             navigate('/user/dashboard',{state:{user:response.data.user}})
             // window.location.href = "/user/dashboard";
           } else if (response.data.message === "Invalid Password") {
@@ -81,10 +80,7 @@ function User() {
            if (response.data.message === "User Already Exists") {
             toast.error("User Already Exists");
           }else if (response.data.message=== "Signup successful") {
-           
-            localStorage.setItem("isLoggedIn", true);
-            // setSessionExpiration(Date.now() + 3600000)
-            navigate('/user/dashboard' ,{state:{user:response.data.user}});
+            window.location.reload();
           }
         });
     }
@@ -299,5 +295,5 @@ function User() {
   );
 }
 
-export default requireAuthu(User);
+export default User;
 // export default User;

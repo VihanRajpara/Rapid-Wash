@@ -4,7 +4,7 @@ import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { PlusSmIcon } from "@heroicons/react/solid";
 import {NavLink} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-
+import axios from "axios";
 // import { blue } from "colors";
 
 function classNames(...classes) {
@@ -16,11 +16,21 @@ function classNames(...classes) {
 function Header() {
   const washerman = JSON.parse(localStorage.getItem("washerman"));
    const navigate=useNavigate();
-  const logout = () => {
-    localStorage.removeItem('LoggedIn');
-    localStorage.removeItem('washerman');
-    console.log("logout");
-    navigate('/washerman');
+   const logout = () => {
+    axios
+    .get("http://localhost:5000/api/washerman/logout", {
+      withCredentials: true,
+    })
+    .then((res) => {
+      console.log(res.data.message)
+      if(res.data.message==='Logged out successfully'){
+        localStorage.clear();
+        navigate('/washerman'); 
+      }
+
+    })
+    .catch((err) => console.log(err));
+    
   }
   return (
     <>

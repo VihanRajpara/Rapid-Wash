@@ -15,34 +15,16 @@ function OrderDetail() {
   const [pincode, setPin] = useState(location.state.luser.pincode);
   const [cloth, setCloth] = useState("");
   const [city, setCity] = useState(location.state.washerman.city);
+  const [wemail, setWemail] = useState(location.state.washerman.email);
+  const [shopname, setshopname] = useState(location.state.washerman.shopname);
   const [luser, setLuser] = useState(null);
   const [washerman, setWasherman] = useState(null);
   const cost = location.state.washerman.cost;
 
   const Close = () => {
     navigate("/user/dashboard");
-    localStorage.removeItem("luser");
-    localStorage.removeItem("lwash");
   };
 
-  //Login User Information from WashCard
-  useEffect(() => {
-    if (location.state) {
-      setLuser(location.state.luser);
-      setWasherman(location.state.washerman);
-      localStorage.setItem("luser", JSON.stringify(location.state.luser));
-      localStorage.setItem("lwash", JSON.stringify(location.state.washerman));
-    } else {
-      const userFromStorageu = localStorage.getItem("luser");
-      const userFromStoragew = localStorage.getItem("lwash");
-      if (userFromStorageu && userFromStoragew) {
-        setLuser(JSON.parse(userFromStorageu));
-        setWasherman(JSON.parse(userFromStoragew));
-      }
-    }
-  }, [location.state]);
-  // console.log("w d",washerman.shopname);
-  //submit
   const handleOrder = async (Sevent) => {
     Sevent.preventDefault();
     if (
@@ -61,8 +43,8 @@ function OrderDetail() {
           username: name,
           contact: contact,
           uemail: email,
-          wemail: washerman.email,
-          shopname: washerman.shopname,
+          wemail: wemail,
+          shopname: shopname,
           address: address,
           city: city,
           pincode: pincode,
@@ -134,7 +116,7 @@ function OrderDetail() {
                           class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                           value={email}
                           placeholder="email@domain.com"
-                          onChange={(event) => setEmail(event.target.value)}
+                          // onChange={(event) => setEmail(event.target.value)}
                         />
                       </div>
 
@@ -160,7 +142,7 @@ function OrderDetail() {
                           class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                           value={city}
                           placeholder=""
-                          onChange={(event) => setCity(event.target.value)}
+                          // onChange={(event) => setCity(event.target.value)}
                         />
                       </div>
 
@@ -173,7 +155,7 @@ function OrderDetail() {
                           class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                           placeholder=""
                           value={pincode}
-                          onChange={(event) => setPin(event.target.value)}
+                          // onChange={(event) => setPin(event.target.value)}
                         />
                       </div>
                       <div class="md:col-span-3">

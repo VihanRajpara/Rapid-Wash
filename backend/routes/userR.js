@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
+// const session = require("express-session");
 const User = require("../model/user");
+// const {protectUser}= require("../middleware/authUser");
+const jwt = require("jsonwebtoken");
+
 // Signup route
 router.post("/signup", async (req, res) => {
   try {
@@ -32,16 +36,86 @@ router.post("/login", async (req, res) => {
     } else if (user.password !== password) {
       res.json({ message: "Invalid Password" });
     }else{
+      const token = await user.generateAuthToken();
+      res.cookie("jwtoken", token, {
+        expires: new Date(Date.now() + 86400000),
+        httpOnly: true,
+      });
+      // console.log(token);
       res.status(200).json({ message: "Successfully logged in" ,user:user});
+     
     }
-    
-      
-    
   } catch (error) {
     console.log(error);
 
   }
 });
+
+
+//logout
+router.get('/logout', (req, res) => {
+  // destroy session
+
+    try {  
+      res.clearCookie("jwtoken", { path: "/" });
+      res.json({ message: "Logged out successfully"});
+      // console.log("logout finish ",req.cookies);
+    } catch (error) {
+      console.log(error);
+    }
+});
+router.get('/check',async (req, res) => {
+  const token = req.cookies.jwtoken;
+  // console.log("this is check",token)
+  if (!token) {
+    res.json({ message: "user not login"});
+  }
+  else{
+    try{
+    const verify_token = jwt.verify(
+      token,
+      process.env.JWT_SECRET);
+      root_user = await User.findOne({
+        _id: verify_token._id,
+        token: token,
+      }); 
+      // console.log(root_user)
+      if(root_user){res.json({ message: "user already login"});}
+      else{res.json({ message: "user not login"});}
+    }
+    catch{}
+    
+    }
+  
+
+});
+
+router.get('/get',async (req, res) => {
+  const token = req.cookies.jwtoken;
+  // console.log("this is check",token)
+  if (!token) {
+    res.json({ message: "user not login"});
+  }
+  else{
+    try{
+    const verify_token = jwt.verify(
+      token,
+      process.env.JWT_SECRET);
+      root_user = await User.findOne({
+        _id: verify_token._id,
+        token: token,
+      }); 
+      // console.log(root_user)
+      if(root_user){res.json({ message:root_user});}
+      else{res.json({ message: "user not login"});}
+    }
+    catch{}
+    
+    }
+  
+
+});
+
 
 
 

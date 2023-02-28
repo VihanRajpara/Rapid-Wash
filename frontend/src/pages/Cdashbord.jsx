@@ -1,8 +1,6 @@
 import React from "react";
-// import Navbar from "../Components";
+
 import Footer from "../Components/Footer";
-import requireAuth from "../utils/authDashboard";
-import { Select, Option } from "@material-tailwind/react";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
@@ -11,28 +9,33 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Header from "../Components/Header";
 
-
 function Cdashbord(props) {
   const location=useLocation();
-  const [luser,setLuser]=useState(null);
+  const [luser,setLuser]=useState();
   const [area,setArea]=useState("all");
-  // const location = useLocation();
   const navigate =useNavigate();
   const [washerman, setUsers] = useState([]);
+
   
-  //Login User Information from from User.jsx 
   useEffect(() => {
-    if (location.state) {
-      setLuser(location.state.user);
+    axios
+  .get("http://localhost:5000/api/users/check", { withCredentials: true })
+  .then((response) => {console.log("dash");
+    if (response.data.message === "user not login"){navigate("/user")}
+    else if(response.data.message === "user already login"){}
+    });
+
+    axios
+    .get("http://localhost:5000/api/users/get", { withCredentials: true })
+    .then((response) => {console.log("dash");
+      if (response.data.message){
+      setLuser(response.data.message);
       localStorage.setItem('user', JSON.stringify(location.state.user));
-    } else {
-      const userFromStorage = localStorage.getItem('user');
-      if (userFromStorage) {
-        setLuser(JSON.parse(userFromStorage));
-      }
     }
-  }, [location.state]);
-  console.log("this is from state",luser);
+      else if(!response.data.message){}
+      });
+  }, []);
+  console.log("this is login user",luser);
  
   //Washerman Detail from Database
   useEffect(() => {
@@ -51,11 +54,12 @@ function Cdashbord(props) {
   return (
     <>
       <div className="min-h-screen">
-       <Header/>
+       <Header user={luser}/>
        <header className="bg-black shadow">
           <div className="mx-auto text-center">
             <h2 className="font-medium leading-tight py-2 text-4xl mt-0 mb-2 text-blue-600">
               Find best Option for you
+  
             </h2>
           </div>
         </header>
@@ -110,5 +114,5 @@ function Cdashbord(props) {
   );
 }
 
-export default requireAuth(Cdashbord);
+export default Cdashbord;
 

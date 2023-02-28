@@ -1,14 +1,21 @@
 import React,{useState,useEffect} from "react";
 import Footer from "../Components/Footer";
-import requireAuth from "../utils/authWdash";
+// import requireAuth from "../utils/authWdash";
 import Details from "../Components/Wordertable";
 import Header from "../Components/Wheader";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 function Wdorder() {
+  const navigate=useNavigate();
   const [orders, setOrders] = useState([]);
   const washerman = JSON.parse(localStorage.getItem("washerman"));
   useEffect(() => {
+    axios
+    .get("http://localhost:5000/api/washerman/check", { withCredentials: true })
+    .then((response) => {console.log("dash");
+      if (response.data.message === "washerman not login"){navigate("/washerman");window.location.reload();}
+      else if(response.data.message === "washerman already login"){navigate("/washerman/order/done")}
+      });
     axios
       .post("http://localhost:5000/api/order/req", { wemail:washerman.email,status:"Done" })
       .then((res) => {
@@ -63,4 +70,4 @@ function Wdorder() {
   )
 }
 
-export default requireAuth(Wdorder);
+export default Wdorder;

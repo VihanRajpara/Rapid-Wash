@@ -2,10 +2,7 @@
 import React from "react";
 import axios from "axios";
 function Details(order) {
-  
-  // console.log(order);
-  // console.log(order.order.username);
-
+  const [showModal, setShowModal] = React.useState(false);
   const Changestatus = async (event) => {
     event.preventDefault();
     // location.reload();
@@ -34,6 +31,7 @@ const Ondelete = async (event) => {
 }
 
   return (
+    <>
     <tbody class="text-gray-600 text-sm font-light">
       <tr class="border-b border-gray-200 hover:bg-gray-100">
         <td class="py-3 px-6 text-left">
@@ -61,9 +59,7 @@ const Ondelete = async (event) => {
           <div class="flex item-center ">
             <div
               class="w-4 mr-2 transform hover:text-green-500 hover:scale-110"
-              onClick={() => {
-                console.log("i am click");
-              }}
+              onClick={() => setShowModal(true)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -121,6 +117,73 @@ const Ondelete = async (event) => {
         </td>
       </tr>
     </tbody>
+    {showModal ? (
+      <>
+        <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <div className="relative w-auto my-6 mx-auto max-w-3xl">
+            {/*content*/}
+            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+              {/*header*/}
+              <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                <h3 className="text-3xl font-semibold">About Order</h3>
+              </div>
+
+              <div className="relative p-6 flex-auto">
+                <table class="table table-striped-columns">
+                  <tbody>
+                    <tr>
+                      <th scope="row">Order id</th>
+
+                      <td>{order.order._id}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Order Booked Date</th>
+                      <td>{order.order.date}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Order Owner Name</th>
+                      <td>{order.order.username}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Owner email</th>
+                      <td>{order.order.uemail}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Owner Phone No.</th>
+                      <td>{order.order.contact}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Washerman email</th>
+                      <td>{order.order.wemail}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Shop Name</th>
+                      <td>{order.order.shopname}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Cost</th>
+                      <td>{order.order.cost}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b gap-2">
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md"
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+      </>
+    ) : null}
+    </>
   );
 }
 

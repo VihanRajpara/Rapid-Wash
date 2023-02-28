@@ -2,17 +2,22 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Footer from "../Components/Footer";
 import Details from "../Components/Uordert";
-import requireAuth from "../utils/authDashboard";
 import Header from "../Components/Header";
-
+import { useNavigate } from "react-router-dom";
 
 function Uporder() {
-  // const [user,setUser]=useState("");
+ const navigate=useNavigate();
   const [orders, setOrders] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
+    axios
+  .get("http://localhost:5000/api/users/check", { withCredentials: true })
+  .then((response) => {console.log("dash");
+    if (response.data.message === "user not login"){navigate("/user");window.location.reload();}
+    else if(response.data.message === "user already login"){navigate("/user/order/pending")}
+    });
     axios
       .post("http://localhost:5000/api/order/detail", { uemail: user.email,status:"Processing" })
       .then((res) => {
@@ -69,4 +74,4 @@ function Uporder() {
   );
 }
 
-export default  requireAuth(Uporder);
+export default  Uporder;

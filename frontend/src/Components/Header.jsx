@@ -1,11 +1,11 @@
-import { Fragment } from "react";
+import { Fragment ,useEffect,useState} from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { PlusSmIcon } from "@heroicons/react/solid";
 import {NavLink} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
-// import { blue } from "colors";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -14,13 +14,25 @@ function classNames(...classes) {
   
 
 function Header() {
-  const user = JSON.parse(localStorage.getItem("user"));
    const navigate=useNavigate();
+  //  const user = JSON.parse(localStorage.getItem("user"));
+
+   
   const logout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('user');
-    console.log("logout");
-    navigate('/user');
+    axios
+    .get("http://localhost:5000/api/users/logout", {
+      withCredentials: true,
+    })
+    .then((res) => {
+      console.log(res.data.message)
+      if(res.data.message==='Logged out successfully'){
+        localStorage.clear();
+        navigate('/user'); 
+      }
+
+    })
+    .catch((err) => console.log(err));
+    
   }
   return (
     <>
@@ -45,7 +57,7 @@ function Header() {
                         )}
                       </Disclosure.Button>
                     </div>
-                    {/* <div className="flex-shrink-0 flex items-center">
+                    <div className="flex-shrink-0 flex items-center">
                       <img
                         className="block lg:hidden h-8 w-auto"
                         src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
@@ -56,7 +68,7 @@ function Header() {
                         src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
                         alt="Workflow"
                       />
-                    </div> */}
+                    </div>
                     <div className="hidden md:ml-6 md:flex md:space-x-8">
                       
                       {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
@@ -133,9 +145,9 @@ function Header() {
                           <Menu.Item>
                              
                                 <p
-                                  className="bg-gray-100 block px-4 py-2 text-sm text-gray-900"
+                                  className="bg-gray-100 block px-4 py-2 text-sm text-blue-500"
                                 >
-                                {/* {user.email} */}
+                                  {/* {user.email} */}
                                 </p>
                             
                             </Menu.Item>
@@ -235,10 +247,10 @@ function Header() {
                       />
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium text-gray-300">
+                      <div className="text-base font-medium text-blue-500">
                         {/* {user.username} */}
                       </div>
-                      <div className="text-sm font-medium text-gray-300">
+                      <div className="text-sm font-medium text-blue-500">
                         {/* {user.email} */}
                       </div>
                     </div>

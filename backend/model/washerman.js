@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 // const { default: Washerman } = require('../../frontend/src/pages/Washerman');
 const Schema = mongoose.Schema;
-
+const jwt = require("jsonwebtoken");
 const userSchema = new Schema({
   username: {
     type: String,
@@ -39,11 +39,28 @@ const userSchema = new Schema({
   cost:{
     type:String,
     require:true
+  },
+  token:{
+    type:String,
   }
 },
 {
     timestamps:true,
 })
+
+userSchema.methods.generateAuthToken = async function () {
+  try {
+    const token_final = jwt.sign(
+      { _id: this._id.toString() },
+      process.env.JWT_SECRET
+    );
+    this.token = token_final;
+    await this.save();
+    return token_final;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const Washerman = mongoose.model('Washerman', userSchema);
 
