@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Navigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,21 +8,20 @@ import "react-toastify/dist/ReactToastify.css";
 function OrderDetail() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [name, setName] = useState(location.state.luser.username);
-  const [contact, setContact] = useState(location.state.luser.contact);
-  const [address, setAdd] = useState(location.state.luser.address);
-  const [email, setEmail] = useState(location.state.luser.email);
-  const [pincode, setPin] = useState(location.state.luser.pincode);
-  const [cloth, setCloth] = useState("");
-  const [city, setCity] = useState(location.state.washerman.city);
-  const [wemail, setWemail] = useState(location.state.washerman.email);
-  const [shopname, setshopname] = useState(location.state.washerman.shopname);
-  // const [costp, setcostp] = useState(location.state.washerman.cost);
-  const cost = location.state.washerman.cost;
+  const [name, setName] = useState(location.state.order.username);
+  const [contact, setContact] = useState(location.state.order.contact);
+  const [address, setAdd] = useState(location.state.order.address);
+  const [email, setEmail] = useState(location.state.order.uemail);
+  const [pincode, setPin] = useState(location.state.order.pincode);
+  const [cloth, setCloth] = useState(location.state.order.pair);
+  const [city, setCity] = useState(location.state.order.city);
+  const [wemail, setWemail] = useState(location.state.order.wemail);
+  const [shopname, setshopname] = useState(location.state.order.shopname);
+  const coost = (location.state.order.cost/location.state.order.pair);
+  console.log(coost);
   const Close = () => {
-    navigate("/user/dashboard");
+    navigate(-1);
   };
-
   const handleOrder = async (Sevent) => {
     Sevent.preventDefault();
     if (
@@ -38,7 +36,8 @@ function OrderDetail() {
       toast.error("Fields are required");
     } else {
       await axios
-        .post("http://localhost:5000/api/order/book", {
+        .post("http://localhost:5000/api/order/edit", {
+          _id:location.state.order._id,
           username: name,
           contact: contact,
           uemail: email,
@@ -46,19 +45,15 @@ function OrderDetail() {
           shopname: shopname,
           address: address,
           city: city,
-          pincode: pincode,
-          costp:cost,
-          cost: cost * cloth,
-          pair: cloth,
+          pincode:pincode,
+          cost: (location.state.order.cost/location.state.order.pair) * cloth,
+          pair:cloth,
         })
         .then((response) => {
-          if (response.data.message === "Booked successful") {
+          if (response.data.message === "edit successful") {
             toast.success("Order Booked  (wailt a moment)");
-            setTimeout(() => {
+            // window.location.reload();
               navigate("/user/order/approve");
-              localStorage.removeItem("luser");
-              localStorage.removeItem("lwash");
-            });
           } else {
             toast.error("Retry");
           }
@@ -75,7 +70,7 @@ function OrderDetail() {
               <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
                   <div class="text-gray-600">
-                    <p class="font-medium text-lg">Order Details</p>
+                    <p class="font-medium text-lg">Edit Order Details</p>
                     <p>Please fill out all the fields.</p>
                   </div>
 

@@ -390,3 +390,17 @@ h6 span{
 .pushable:active .front11 {
   transform: translateY(-2px);
 }
+
+
+
+
+
+
+
+
+input[type=file]::file-selector-button {
+  
+  display: none;
+  cursor: pointer;
+
+}

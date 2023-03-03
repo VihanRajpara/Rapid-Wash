@@ -184,6 +184,7 @@ function Washerman() {
                           >
                             submit
                           </button>
+                          <div className="text-white hover:text-red" onClick={() => navigate("/user")}>User ?</div>
                         </div>
                       </div>
                     </div>

@@ -49,6 +49,10 @@ const userSchema = new Schema({
     type:String,
     require:true
   },
+  costp:{
+    type:String,
+    require:true
+  },
   date: { type: Date, default: Date.now }
 },
 {

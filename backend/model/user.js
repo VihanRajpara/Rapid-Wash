@@ -28,6 +28,17 @@ const userSchema = new Schema({
     type:String,
     require:true
   },
+  city:{
+    type:String,
+    require:true
+  },
+  occ:{
+    type:String,
+    require:true
+  },
+  image:{
+    type:String,
+  },
   token:{
     type:String,
   }

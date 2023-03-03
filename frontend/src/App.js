@@ -13,8 +13,9 @@ import Wdorder from "./pages/Wdorder";
 import Udorder from "./pages/Udorder";
 import Uporder from "./pages/Uporder";
 import Pagenot from "./pages/Pagenot";
-
-// import Dashboardadmin from "./pages/Dashboardadmin";
+import EditOrder from "./pages/editOrder"
+import UserProfile from "./pages/UserProfile";
+import Usereditprofile from "./pages/Usereditprofile"
 function App() {
   return (
     <>
@@ -36,6 +37,9 @@ function App() {
           <Route path="/user/order/done" element={<Udorder />} />
           <Route path="/user/order/pending" element={<Uporder />} />
           <Route path="/*" element={<Pagenot />} />
+          <Route path="/user/order/edit" element={<EditOrder />} />
+          <Route path="/user/profile" element={<UserProfile />} />
+          <Route path="/user/editprofile" element={<Usereditprofile />} />
           </Routes>
         </div>
       {/* </Router> */}

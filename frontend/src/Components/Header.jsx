@@ -1,9 +1,9 @@
-import { Fragment ,useEffect,useState} from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
-import { PlusSmIcon } from "@heroicons/react/solid";
-import {NavLink} from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import img from "../assets/img/user.png"
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
@@ -11,29 +11,24 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-  
-
 function Header() {
-   const navigate=useNavigate();
-  //  const user = JSON.parse(localStorage.getItem("user"));
-
-   
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  // console.log(decryptedData);
   const logout = () => {
     axios
-    .get("http://localhost:5000/api/users/logout", {
-      withCredentials: true,
-    })
-    .then((res) => {
-      console.log(res.data.message)
-      if(res.data.message==='Logged out successfully'){
-        localStorage.clear();
-        navigate('/user'); 
-      }
-
-    })
-    .catch((err) => console.log(err));
-    
-  }
+      .get("http://localhost:5000/api/users/logout", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data.message);
+        if (res.data.message === "Logged out successfully") {
+          localStorage.clear();
+          navigate("/user");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <div>
@@ -70,40 +65,33 @@ function Header() {
                       />
                     </div>
                     <div className="hidden md:ml-6 md:flex md:space-x-8">
-                      
                       {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                       <NavLink
                         to="/user/dashboard"
-                       
                         className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
- 
                       >
                         Home
                       </NavLink>
                       <NavLink
                         to="/user/order/approve"
-                       
                         className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                       >
                         Approval Order
                       </NavLink>
                       <NavLink
                         to="/user/order/pending"
-                       
                         className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                       >
                         Processing Order
                       </NavLink>
                       <NavLink
                         to="/user/order/done"
-                       
                         className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                       >
                         Done Order
                       </NavLink>
                       <NavLink
                         to="/aboutus"
-                       
                         className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                       >
                         About Us
@@ -127,7 +115,7 @@ function Header() {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                              src={user.image||img}
                               alt=""
                             />
                           </Menu.Button>
@@ -142,16 +130,32 @@ function Header() {
                           leaveTo="transform opacity-0 scale-95"
                         >
                           <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <Menu.Item>
-                             
-                                <p
-                                  className="bg-gray-100 block px-4 py-2 text-sm text-blue-500"
-                                >
-                                  {/* {user.email} */}
-                                </p>
-                            
+                            <Menu.Item>
+                              <p className="bg-gray-100 block px-4 py-2 text-sm text-blue-500 truncate">
+                                {user.email}
+                              </p>
                             </Menu.Item>
                             <Menu.Item>
+                              <NavLink
+                                to="/user/profile "
+                               
+                              >
+                                {({ active }) => (
+                                  <a
+                                    className={classNames(
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700"
+                                    )}
+                                  >
+                                    Your Profile
+                                  </a>
+                                )}
+                              </NavLink>
+                            </Menu.Item>
+                            <Menu.Item>
+                            <NavLink
+                                to="/user/editprofile"
+                              >
                               {({ active }) => (
                                 <a
                                   href="#"
@@ -160,22 +164,10 @@ function Header() {
                                     "block px-4 py-2 text-sm text-gray-700"
                                   )}
                                 >
-                                  Your Profile
+                                  Edit Profile
                                 </a>
                               )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <a
-                                  href="#"
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  Settings
-                                </a>
-                              )}
+                              </NavLink>
                             </Menu.Item>
                             <Menu.Item>
                               {({ active }) => (
@@ -183,7 +175,8 @@ function Header() {
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
                                     "block px-4 py-2 text-sm text-gray-700"
-                                  )}  onClick={logout}
+                                  )}
+                                  onClick={logout}
                                 >
                                   Sign out
                                 </div>
@@ -200,42 +193,46 @@ function Header() {
               <Disclosure.Panel className="md:hidden">
                 <div className="pt-2 pb-3 space-y-1">
                   {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-                  <NavLink to='/user/dashboard'>
-                  <Disclosure.Button
-                    as="div"
-                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
-                  >
-                    Home
-                  </Disclosure.Button></NavLink>
-                  <NavLink to='/user/order/approve'>
-                  <Disclosure.Button
-                    as="div"
-                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
-                  >
-                    Approval Order
-                  </Disclosure.Button></NavLink>
-                  <NavLink to='/user/order/pending'>
-                  <Disclosure.Button
-                    as="div"
-                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
-                  >
-                    Processing Order
-                  </Disclosure.Button></NavLink>
-                  <NavLink to='/user/order/done'>
-                  <Disclosure.Button
-                    as="div"
-                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
-                  >
-                    Done Order
-                  </Disclosure.Button></NavLink>
-                  <NavLink to='/aboutus'>
-                  <Disclosure.Button
-                    as="a"
-           
-                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
-                  >
-                    Projects
-                  </Disclosure.Button></NavLink>
+                  <NavLink to="/user/dashboard">
+                    <Disclosure.Button
+                      as="div"
+                      className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                    >
+                      Home
+                    </Disclosure.Button>
+                  </NavLink>
+                  <NavLink to="/user/order/approve">
+                    <Disclosure.Button
+                      as="div"
+                      className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                    >
+                      Approval Order
+                    </Disclosure.Button>
+                  </NavLink>
+                  <NavLink to="/user/order/pending">
+                    <Disclosure.Button
+                      as="div"
+                      className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                    >
+                      Processing Order
+                    </Disclosure.Button>
+                  </NavLink>
+                  <NavLink to="/user/order/done">
+                    <Disclosure.Button
+                      as="div"
+                      className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                    >
+                      Done Order
+                    </Disclosure.Button>
+                  </NavLink>
+                  <NavLink to="/aboutus">
+                    <Disclosure.Button
+                      as="a"
+                      className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                    >
+                      Projects
+                    </Disclosure.Button>
+                  </NavLink>
                 </div>
                 <div className="pt-4 pb-3 border-t border-gray-200">
                   <div className="flex items-center px-4 sm:px-6">
@@ -248,10 +245,10 @@ function Header() {
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium text-blue-500">
-                        {/* {user.username} */}
+                        {user.username}
                       </div>
                       <div className="text-sm font-medium text-blue-500">
-                        {/* {user.email} */}
+                        {user.email}
                       </div>
                     </div>
                     <button
@@ -271,17 +268,18 @@ function Header() {
                       Your Profile
                     </Disclosure.Button>
                     <NavLink>
-                    <Disclosure.Button
-                      as="a"
-                      
-                      className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
-                    >
-                      Settings
-                    </Disclosure.Button></NavLink>
+                      <Disclosure.Button
+                        as="a"
+                        className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
+                      >
+                        Settings
+                      </Disclosure.Button>
+                    </NavLink>
                     <Disclosure.Button
                       as="a"
                       href="#"
-                      className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6" onClick={logout}
+                      className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
+                      onClick={logout}
                     >
                       Sign out
                     </Disclosure.Button>

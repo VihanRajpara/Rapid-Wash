@@ -1,5 +1,5 @@
 import React from "react";
-
+import {AES} from 'crypto-js';
 import Footer from "../Components/Footer";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -30,12 +30,14 @@ function Cdashbord(props) {
     .then((response) => {console.log("dash");
       if (response.data.message){
       setLuser(response.data.message);
-      localStorage.setItem('user', JSON.stringify(location.state.user));
     }
       else if(!response.data.message){}
       });
   }, []);
   console.log("this is login user",luser);
+//   const encryptedDataFromStorage = localStorage.getItem('my-data');
+// const bytes = CryptoJS.AES.decrypt(encryptedDataFromStorage, 'my-secret-key');
+// const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
  
   //Washerman Detail from Database
   useEffect(() => {

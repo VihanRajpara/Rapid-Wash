@@ -1,8 +1,21 @@
 import React from "react";
-
+import axios from "axios";
+import { useNavigate, useNavigation } from "react-router-dom";
 function Details(order) {
-  // window.location.reload();
   const [showModal, setShowModal] = React.useState(false);
+const navigate=useNavigate()
+  const Ondelete = async (event) => {
+    event.preventDefault();
+    console.log("this is delete",order.order._id)
+    axios.post("http://localhost:5000/api/order/delete", {
+      _id:order.order._id
+    })
+    .then((res) => {
+      window.location.reload();
+    })
+    .catch((err) => console.log(err));
+  }
+  
   return (
     <>
       <tbody class="text-gray-600 text-sm font-light">
@@ -26,6 +39,7 @@ function Details(order) {
             </span>
           </td>
           <td class="py-3 px-6 text-center">
+            {/* eye */}
             <div class="flex item-center ">
               <div class="w-4 mr-2 transform hover:text-green-500 hover:scale-110">
                 <svg
@@ -49,7 +63,8 @@ function Details(order) {
                   />
                 </svg>
               </div>
-              <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
+              {/* edit */}
+              <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110" onClick={() =>  navigate("/user/order/edit",{state:{order:order.order}})}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -64,7 +79,8 @@ function Details(order) {
                   />
                 </svg>
               </div>
-              <div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110">
+              {/* delete */}
+              <div class="w-4 mr-2 transform hover:text-red-500 hover:scale-110" onClick={Ondelete}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

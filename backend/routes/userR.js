@@ -9,10 +9,10 @@ const jwt = require("jsonwebtoken");
 router.post("/signup", async (req, res) => {
   try {
    
-    const { username, email, password ,address,contact,pincode} = req.body;
+    const { username, email, password ,address,contact,pincode,city,occ} = req.body;
     const us = await User.findOne({ email });
     if (!us) {
-      const user = new User({ username, email, password,address,contact,pincode });
+      const user = new User({ username, email, password,address,contact,pincode,occ,city ,image:""});
       await user.save();
       res.status(200).json({ message: "Signup successful" ,user:user});
     }
@@ -116,6 +116,28 @@ router.get('/get',async (req, res) => {
 
 });
 
+// update route
+router.post("/update", async (req, res) => {
+  try {
+   
+    const { _id,username,address,contact,pincode,city,occ,postImage} = req.body;
+    User.findById(_id, (err, user) => {
+      console.log(err)
+      user.username=username;
+      user.address=address;
+      user.contact=contact;
+      user.pincode=pincode;
+      user.city=city;
+      user.occ=occ;
+      user.image=postImage
+     user.save();
+     res.json({ message: "edit user" ,user:user});
+    });
+  } catch (error) {
+    console.log(error);
+  
+  }
+});
 
 
 
