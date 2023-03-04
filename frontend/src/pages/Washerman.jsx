@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import requireAuthw from "../utils/authwash";
 import "../User/assets/css/User.css";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -110,9 +109,8 @@ function Washerman() {
         .then((response) => {
           // if the login is successful, redirect to the dashboard
           if (response.data.message === "Successfully logged in") {
-            navigate("/washerman/dashboard", {
-              state: { washerman: response.data.washerman },
-            });
+            localStorage.setItem("washerman",JSON.stringify(response.data.washerman));
+            navigate("/washerman/dashboard", {state: { washerman: response.data.washerman },});
           } else if (response.data.message === "Invalid Password") {
             toast.error("Invalid Password");
           } else if (response.data.message === "User not found") {
@@ -184,7 +182,12 @@ function Washerman() {
                           >
                             submit
                           </button>
-                          <div className="text-white hover:text-red" onClick={() => navigate("/user")}>User ?</div>
+                          <div
+                            className="text-white hover:text-red"
+                            onClick={() => navigate("/user")}
+                          >
+                            User ?
+                          </div>
                         </div>
                       </div>
                     </div>

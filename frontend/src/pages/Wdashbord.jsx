@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../Components/Footer";
-// import requireAuth from "../utils/authWdash";
-import Header from "../Components/Wheader";
+import Wheader from "../Components/Wheader";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -26,30 +25,11 @@ function Wdashbord() {
         }
       });
 
-    // Query backend for count of orders placed in last year
-    axios
-      .post("http://localhost:5000/api/order/last-year-count")
-      .then((response) => setYearCount(response.data.count))
-      .catch((error) => console.log(error));
-
-    axios
-      .post("http://localhost:5000/api/order/last-month-count")
-      .then((response) => setMonthCount(response.data.count))
-      .catch((error) => console.log(error));
-
-    axios
-      .post("http://localhost:5000/api/order/last-year-done-cost")
-      .then((response) => setYearCost(response.data.totalCost))
-      .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
     if (location.state) {
       setwasherman(location.state.washerman);
-      localStorage.setItem(
-        "washerman",
-        JSON.stringify(location.state.washerman)
-      );
     } else {
       const userFromStorage = localStorage.getItem("washerman");
       if (userFromStorage) {
@@ -62,7 +42,7 @@ function Wdashbord() {
   return (
     <>
       <div className="min-h-screen">
-        <Header />
+        <Wheader />
         <header className="bg-black shadow">
           <div className="mx-auto text-center">
             <h2 className="font-medium leading-tight py-2 text-4xl mt-0 mb-2 text-blue-600">

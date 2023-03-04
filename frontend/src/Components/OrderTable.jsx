@@ -138,6 +138,14 @@ const navigate=useNavigate()
                         <td>{order.order.shopname}</td>
                       </tr>
                       <tr>
+                        <th scope="row">Total Pair</th>
+                        <td>{order.order.pair}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Cost per Pari</th>
+                        <td>{order.order.costp}</td>
+                      </tr>
+                      <tr>
                         <th scope="row">Cost</th>
                         <td>{order.order.cost}</td>
                       </tr>

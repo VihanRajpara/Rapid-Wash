@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-// const session = require("express-session");
 const User = require("../model/user");
-// const {protectUser}= require("../middleware/authUser");
 const jwt = require("jsonwebtoken");
 
 // Signup route
@@ -21,7 +19,6 @@ router.post("/signup", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    // res.status(500).send({ message: 'Error creating user', error });
   }
 });
 
@@ -36,6 +33,7 @@ router.post("/login", async (req, res) => {
     } else if (user.password !== password) {
       res.json({ message: "Invalid Password" });
     }else{
+
       const token = await user.generateAuthToken();
       res.cookie("jwtoken", token, {
         expires: new Date(Date.now() + 86400000),
@@ -53,11 +51,11 @@ router.post("/login", async (req, res) => {
 
 
 //logout
-router.get('/logout', (req, res) => {
+router.get('/logout', async(req, res) => {
   // destroy session
-
     try {  
       res.clearCookie("jwtoken", { path: "/" });
+
       res.json({ message: "Logged out successfully"});
       // console.log("logout finish ",req.cookies);
     } catch (error) {
@@ -122,7 +120,7 @@ router.post("/update", async (req, res) => {
    
     const { _id,username,address,contact,pincode,city,occ,postImage} = req.body;
     User.findById(_id, (err, user) => {
-      console.log(err)
+      // console.log(err)
       user.username=username;
       user.address=address;
       user.contact=contact;

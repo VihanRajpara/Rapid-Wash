@@ -97,4 +97,30 @@ router.get('/check', (req, res) => {
 
 });
 
+router.get('/get',async (req, res) => {
+  const token = req.cookies.jwtoken;
+  // console.log("this is check",token)
+  if (!token) {
+    res.json({ message: "user not login"});
+  }
+  else{
+    try{
+    const verify_token = jwt.verify(
+      token,
+      process.env.JWT_SECRET);
+      root_user = await Washerman.findOne({
+        _id: verify_token._id,
+        token: token,
+      }); 
+      // console.log(root_user)
+      if(root_user){res.json({ message:root_user});}
+      else{res.json({ message: "user not login"});}
+    }
+    catch{}
+    
+    }
+  
+
+});
+
 module.exports = router;

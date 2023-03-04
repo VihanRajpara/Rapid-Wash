@@ -391,16 +391,3 @@ h6 span{
   transform: translateY(-2px);
 }
 
-
-
-
-
-
-
-
-input[type=file]::file-selector-button {
-  
-  display: none;
-  cursor: pointer;
-
-}

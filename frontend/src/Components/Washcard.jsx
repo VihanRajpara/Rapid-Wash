@@ -16,7 +16,7 @@ function Washcard({ user, luser }) {
           <h1 class="text-xl font-bold text-gray-800 uppercase dark:text-black">
             {user.shopname}
           </h1>
-          <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+          <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 truncate">
             {user.address}
           </p>
         </div>

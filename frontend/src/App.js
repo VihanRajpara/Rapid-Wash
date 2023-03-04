@@ -16,6 +16,8 @@ import Pagenot from "./pages/Pagenot";
 import EditOrder from "./pages/editOrder"
 import UserProfile from "./pages/UserProfile";
 import Usereditprofile from "./pages/Usereditprofile"
+import Washprofile from "./pages/Washprofile";
+import Washeditprofile from "./pages/Washeditprofile"
 function App() {
   return (
     <>
@@ -40,6 +42,8 @@ function App() {
           <Route path="/user/order/edit" element={<EditOrder />} />
           <Route path="/user/profile" element={<UserProfile />} />
           <Route path="/user/editprofile" element={<Usereditprofile />} />
+          <Route path="/washerman/profile" element={<Washprofile />} />
+          <Route path="/washerman/edit" element={<Washeditprofile />} />
           </Routes>
         </div>
       {/* </Router> */}

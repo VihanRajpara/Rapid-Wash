@@ -111,28 +111,5 @@ router.post("/book", async (req, res) => {
     }
   });
 
-  router.post('/last-year-count', async (req, res) => {
-    const lastYear = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
-    await Order.countDocuments({ date: { $gte: lastYear }, status: "Done" })
-      .then(count => res.json({ count }))
-      .catch(error => res.status(500).json({ error }));
-  });
-
-  router.post('/last-month-count', async (req, res) => {
-    const lastYear = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-    await Order.countDocuments({ date: { $gte: lastYear }, status: "Done" })
-      .then(count => res.json({ count }))
-      .catch(error => res.status(500).json({ error }));
-  });
-
-  router.post('/last-year-done-cost', async(req, res) => {
-    const lastYear = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
-    await Order.aggregate([
-      { $match: { date: { $gte: lastYear }, status: "Done" } },
-      { $group: { _id: null, totalCost: { $sum: "$cost" } } }
-    ])
-      .then(result => res.json({ totalCost: result[0].totalCost }))
-      .catch(error => res.status(500).json({ error }));
-  });
 
 module.exports = router;

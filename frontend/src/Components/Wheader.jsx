@@ -5,7 +5,7 @@ import { PlusSmIcon } from "@heroicons/react/solid";
 import {NavLink} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-// import { blue } from "colors";
+import img from "../assets/img/user.png"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -125,7 +125,7 @@ function Header() {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                              src={img}
                               alt=""
                             />
                           </Menu.Button>
@@ -143,13 +143,14 @@ function Header() {
                           <Menu.Item>
                              
                                 <p
-                                  className="bg-gray-100 block px-4 py-2 text-sm text-gray-900"
+                                  className="bg-gray-100 block px-4 py-2 text-sm text-blue-500"
                                 
                                 >
-                                {/* {washerman.email} */}
+                                {washerman.email}
                             </p>
                             </Menu.Item>
                             <Menu.Item>
+                              <NavLink to='/washerman/profile'>
                               {({ active }) => (
                                 <a
                                   href="#"
@@ -161,8 +162,10 @@ function Header() {
                                   Your Profile
                                 </a>
                               )}
+                              </NavLink>
                             </Menu.Item>
                             <Menu.Item>
+                              <NavLink to="/washerman/edit">
                               {({ active }) => (
                                 <a
                                   href="#"
@@ -174,6 +177,7 @@ function Header() {
                                   Settings
                                 </a>
                               )}
+                              </NavLink>
                             </Menu.Item>
                             <Menu.Item>
                               {({ active }) => (
@@ -232,10 +236,10 @@ function Header() {
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium text-gray-300">
-                        Tom Cook
+                        {washerman.username}
                       </div>
                       <div className="text-sm font-medium text-gray-300">
-                        tom@example.com
+                        {washerman.email}
                       </div>
                     </div>
                     <button
