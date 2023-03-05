@@ -49,6 +49,9 @@ function Washerman() {
           navigate("/washerman/dashboard");
         }
       });
+
+
+      
   }, []);
 
   const handlesignup = async (sevent) => {
@@ -109,7 +112,7 @@ function Washerman() {
         .then((response) => {
           // if the login is successful, redirect to the dashboard
           if (response.data.message === "Successfully logged in") {
-            localStorage.setItem("washerman",JSON.stringify(response.data.washerman));
+            // localStorage.setItem("washerman",JSON.stringify(response.data.washerman));
             navigate("/washerman/dashboard", {state: { washerman: response.data.washerman },});
           } else if (response.data.message === "Invalid Password") {
             toast.error("Invalid Password");

@@ -42,13 +42,19 @@ const userSchema = new Schema({
   },
   token:{
     type:String,
+  },
+  image:{
+    type:String,
+  },
+  simage:{
+    type:String,
   }
 },
 {
     timestamps:true,
 })
 
-userSchema.methods.generateAuthToken = async function () {
+userSchema.methods.generateAuthTokenwash = async function () {
   try {
     const token_final = jwt.sign(
       { _id: this._id.toString() },

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Washerman = require("../model/washerman");
-
+const jwt = require("jsonwebtoken");
 // Signup route
 router.post("/signup", async (req, res) => {
   try {
@@ -51,7 +51,7 @@ router.post("/login", async (req, res) => {
     } else if (user.password !== password) {
       res.json({ message: "Invalid Password" });
     } else {
-      const token = await user.generateAuthToken();
+      const token = await user.generateAuthTokenwash();
       res.cookie("jwtokenwasherman", token, {
         expires: new Date(Date.now() + 86400000),
         httpOnly: true,
@@ -97,11 +97,11 @@ router.get('/check', (req, res) => {
 
 });
 
-router.get('/get',async (req, res) => {
-  const token = req.cookies.jwtoken;
-  // console.log("this is check",token)
+router.get('/getwash',async (req, res) => {
+  const token = req.cookies.jwtokenwasherman;
+  // console.log("this is get",token)
   if (!token) {
-    res.json({ message: "user not login"});
+    // res.json({ message: "user not login"});
   }
   else{
     try{
@@ -114,13 +114,38 @@ router.get('/get',async (req, res) => {
       }); 
       // console.log(root_user)
       if(root_user){res.json({ message:root_user});}
-      else{res.json({ message: "user not login"});}
+      // else{res.json({ message: "user not login"});}
     }
     catch{}
     
     }
-  
+});
 
+
+router.post('/update',async (req, res) => {
+  try{
+    const{_id,username,contact,pincode,address,shopname,city,cost,postImage,postsImage}=req.body;
+    Washerman.findById(_id,(err,washerman)=>{
+      washerman.username=username;
+      washerman.contact=contact;
+      washerman.pincode=pincode;
+      washerman.address=address;
+      washerman.shopname=shopname;
+      washerman.city=city;
+      washerman.cost=cost;
+      if(postImage){
+        washerman.image=postImage;
+      }if(postsImage){
+        washerman.simage=postsImage;
+      }
+      
+      washerman.save();
+      res.json({ message: "edit washerman" ,washerman:washerman});
+    })
+  }
+  catch(error){
+    console.log(error);
+  }
 });
 
 module.exports = router;

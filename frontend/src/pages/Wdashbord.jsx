@@ -4,45 +4,50 @@ import Wheader from "../Components/Wheader";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+// import { message } from "antd";
 function Wdashbord() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [washerman, setwasherman] = useState(null);
+  const [washerman, setwasherman] = useState([]);
   const [YearCount, setYearCount] = useState(0);
   const [MonthCount, setMonthCount] = useState(0);
   const [YearCost, setYearCost] = useState(0);
   
   useEffect(() => {
-   
-
     axios
-      .get("http://localhost:5000/api/washerman/check", { withCredentials: true })
+    .get("http://localhost:5000/api/washerman/check", { withCredentials: true })
+    .then((response) => {console.log("dash");
+      if (response.data.message === "washerman not login"){navigate("/washerman");window.location.reload();}
+      else if(response.data.message === "washerman already login"){navigate("/washerman/dashboard")}
+      });
+      
+    axios
+      .get("http://localhost:5000/api/washerman/getwash", { withCredentials: true })
       .then((response) => {
         console.log("dash");
-        if (response.data.message === "washerman not login") {
+        if (response.data.message) {
+          setwasherman(response.data.message);
+        } else{
           navigate("/washerman");
-        } else if (response.data.message === "washerman already login") {
         }
       });
-
+     
   }, []);
-
-  useEffect(() => {
-    if (location.state) {
-      setwasherman(location.state.washerman);
-    } else {
-      const userFromStorage = localStorage.getItem("washerman");
-      if (userFromStorage) {
-        setwasherman(JSON.parse(userFromStorage));
-      }
-    }
-  }, [location.state]);
+  axios
+  .post("http://localhost:5000/api/order/dashorderdetail", { email:washerman.email})
+  .then((response) => {
+    console.log("count",response.data.count);
+    
+  });
   console.log("this is from state", washerman);
+  
+ 
+ 
 
   return (
     <>
       <div className="min-h-screen">
-        <Wheader />
+        <Wheader washerman={washerman} />
         <header className="bg-black shadow">
           <div className="mx-auto text-center">
             <h2 className="font-medium leading-tight py-2 text-4xl mt-0 mb-2 text-blue-600">

@@ -10,7 +10,7 @@ import Dashboardadmin from "./pages/Dashboardadmin";
 import Waorder from "./pages/Waorder";
 import Wporder from "./pages/Wporder";
 import Wdorder from "./pages/Wdorder";
-import Udorder from "./pages/Udorder";
+import Udorder from "./pages/Udorder";  
 import Uporder from "./pages/Uporder";
 import Pagenot from "./pages/Pagenot";
 import EditOrder from "./pages/editOrder"
@@ -43,7 +43,7 @@ function App() {
           <Route path="/user/profile" element={<UserProfile />} />
           <Route path="/user/editprofile" element={<Usereditprofile />} />
           <Route path="/washerman/profile" element={<Washprofile />} />
-          <Route path="/washerman/edit" element={<Washeditprofile />} />
+          <Route path="/washerman/editprofile" element={<Washeditprofile />} />
           </Routes>
         </div>
       {/* </Router> */}

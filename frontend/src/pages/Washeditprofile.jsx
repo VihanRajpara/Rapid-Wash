@@ -3,7 +3,9 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+
 function Washeditprofile(){
+  
     const navigate=useNavigate();
     const [id, setId] = useState();
     const [luser, setLuser] = useState();
@@ -13,8 +15,74 @@ function Washeditprofile(){
     const [city, setCity] = useState();
     const [address, setAdd] = useState();
     const [pincode, setPin] = useState();
-    const [occupation, setOcc] = useState();
+    const [shopname, setShopname] = useState();
+    const [cost,setCost]=useState();
     const [postImage, setPostImage] = useState();
+    const [postsImage, setPostsImage] = useState();
+
+    const handleFileUpload = async (e) => {
+      const file = e.target.files[0];
+      const base64 = await convertToBase64(file);
+      console.log("my image", base64);
+      setPostImage(base64);
+    };
+    const handleFileUploadShop = async (e) => {
+      const file = e.target.files[0];
+      const base64 = await convertToBase64(file);
+      console.log("my image", base64);
+      setPostsImage(base64);
+    };
+
+    const handleedit=async(event)=>{
+      console.log("under wash update");
+      event.preventDefault();
+      await axios
+      .post("http://localhost:5000/api/washerman/update",{
+        _id:id,
+        username:name,
+        contact:contact,
+        pincode:pincode,
+        city:city,
+        cost,cost,
+        address:address,
+        shopname:shopname,
+        postImage:postImage,
+        postsImage:postsImage,
+      }).then((response) => {
+        if (response.data.message === "edit washerman") {
+          console.log("done update", response.data.washerman);
+          localStorage.setItem("washerman", JSON.stringify(response.data.washerman));
+          navigate("/washerman/profile");
+        }else{console.log("not done")}
+      });
+    }
+
+    useEffect(() => {
+      axios
+    .get("http://localhost:5000/api/washerman/check", { withCredentials: true })
+    .then((response) => {console.log("dash");
+      if (response.data.message === "washerman not login"){navigate("/washerman");window.location.reload();}
+      else if(response.data.message === "washerman already login"){}
+      });
+    axios
+      .get("http://localhost:5000/api/washerman/getwash", { withCredentials: true })
+      .then((response) => {
+        if (response.data.message) {
+          setLuser(response.data.message);
+          setName(response.data.message.username);
+          setContact(response.data.message.contact);
+          setEmail(response.data.message.email);
+          setCity(response.data.message.city);
+          setAdd(response.data.message.address);
+          setPin(response.data.message.pincode);
+          setShopname(response.data.message.shopname);
+          setId(response.data.message._id);
+          setCost(response.data.message.cost)
+        } else if (!response.data.message) {
+        }
+      });
+    }, []);
+    console.log("washerman ",luser);
     return(
         <div>
             <div>
@@ -41,7 +109,7 @@ function Washeditprofile(){
                               class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                               placeholder=""
                               value={name}
-                            //   onChange={(event) => setName(event.target.value)}
+                              onChange={(event) => setName(event.target.value)}
                             />
                           </div>
 
@@ -54,9 +122,9 @@ function Washeditprofile(){
                               class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                               value={contact}
                               placeholder=""
-                            //   onChange={(event) =>
-                            //     setContact(event.target.value)
-                            //   }
+                              onChange={(event) =>
+                                setContact(event.target.value)
+                              }
                             />
                           </div>
 
@@ -74,7 +142,7 @@ function Washeditprofile(){
                           </div>
 
                           <div class="md:col-span-3">
-                            <label for="address">Address / Street</label>
+                            <label for="address">Shop Address / Street</label>
                             <input
                               type="text"
                               name="address"
@@ -82,12 +150,12 @@ function Washeditprofile(){
                               class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                               value={address}
                               placeholder="Plese give full Address"
-                            //   onChange={(event) => setAdd(event.target.value)}
+                              onChange={(event) => setAdd(event.target.value)}
                             />
                           </div>
 
                           <div class="md:col-span-2">
-                            {/* <label for="city">City</label> */}
+                            <label for="city">City</label>
                             <input
                               type="text"
                               name="city"
@@ -95,7 +163,7 @@ function Washeditprofile(){
                               class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                               value={city}
                               placeholder="Your City"
-                            //   onChange={(event) => setCity(event.target.value)}
+                              onChange={(event) => setCity(event.target.value)}
                             />
                           </div>
 
@@ -108,19 +176,31 @@ function Washeditprofile(){
                               class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                               placeholder="Your zipcoe"
                               value={pincode}
-                            //   onChange={(event) => setPin(event.target.value)}
+                              onChange={(event) => setPin(event.target.value)}
                             />
                           </div>
                           <div class="md:col-span-2">
-                            <label for="zipcode">Occupation</label>
+                            <label for="zipcode">Shopname</label>
                             <input
                               type="text"
                               name="occupation"
                               id="occupation"
                               class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                              placeholder="Your occupation"
-                              value={occupation}
-                            //   onChange={(event) => setOcc(event.target.value)}
+                              placeholder="Your Shopname"
+                              value={shopname}
+                              onChange={(event) => setShopname(event.target.value)}
+                            />
+                          </div>
+                          <div class="md:col-span-1">
+                            <label for="zipcode">Cost</label>
+                            <input
+                              type="text"
+                              name="occupation"
+                              id="occupation"
+                              class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                              placeholder="Your Cost"
+                              value={cost}
+                              onChange={(event) => setCost(event.target.value)}
                             />
                           </div>
                           <div class="md:col-span-3">
@@ -130,7 +210,17 @@ function Washeditprofile(){
                               class="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-neutral-700 outline-none transition duration-300 ease-in-out file:-mx-3 file:-my-1.5 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-1.5 file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[margin-inline-end:0.75rem] file:[border-inline-end-width:1px] hover:file:bg-neutral-200 focus:border-primary focus:bg-white focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none dark:bg-transparent  dark:focus:bg-transparent"
                               type="file"
                               id="formFileMultiple"
-                            //   onChange={(e) => handleFileUpload(e)}
+                              onChange={(e) => handleFileUpload(e)}
+                            />
+                          </div>
+                          <div class="md:col-span-3">
+                           
+                            <label>Upload Shop Photo</label>
+                            <input
+                              class="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-neutral-700 outline-none transition duration-300 ease-in-out file:-mx-3 file:-my-1.5 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-1.5 file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[margin-inline-end:0.75rem] file:[border-inline-end-width:1px] hover:file:bg-neutral-200 focus:border-primary focus:bg-white focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none dark:bg-transparent  dark:focus:bg-transparent"
+                              type="file"
+                              id="formFileMultiple"
+                              onChange={(e) => handleFileUploadShop(e)}
                             />
                           </div>
 
@@ -138,7 +228,7 @@ function Washeditprofile(){
                             <div class="inline-flex items-end gap-2">
                               <button
                                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
-                                // onClick={handleedit}
+                                onClick={handleedit}
                               >
                                 Submit
                               </button>
@@ -168,3 +258,41 @@ function Washeditprofile(){
     )
 }
 export default Washeditprofile;
+
+
+function convertToBase64(file, maxWidth = 800, maxHeight = 600, quality = 0.7) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      const img = new Image();
+      img.src = fileReader.result;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+        if (width > maxWidth) {
+          height *= maxWidth / width;
+          width = maxWidth;
+        }
+        if (height > maxHeight) {
+          width *= maxHeight / height;
+          height = maxHeight;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        let compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
+        while (compressedDataUrl.length / 1024 >= 95) {
+          quality -= 0.05;
+          compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
+        }
+        resolve(compressedDataUrl);
+      };
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+}

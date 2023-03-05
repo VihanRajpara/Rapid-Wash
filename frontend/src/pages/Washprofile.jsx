@@ -5,26 +5,35 @@ import img1 from "../assets/img/5jpg.jpg";
 import axios from "axios";
 function Washprofile() {
   const navigate = useNavigate();
-  const [Washerman, setWasherman] = useState();
+  const [washerman, setwasherman] = useState([]);
 
   const goback = () => {
     navigate("/washerman/dashboard");
   };
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/users/get", { withCredentials: true })
+    .get("http://localhost:5000/api/washerman/check", { withCredentials: true })
+    .then((response) => {console.log("dash");
+      if (response.data.message === "washerman not login"){navigate("/washerman");window.location.reload();}
+      else if(response.data.message === "washerman already login"){}
+      });
+
+      axios
+      .get("http://localhost:5000/api/washerman/getwash", { withCredentials: true })
       .then((response) => {
+        console.log("dash");
         if (response.data.message) {
-          setWasherman(response.data.message);
-        } else if (!response.data.message) {
+          setwasherman(response.data.message);
+        } else{
+          navigate("/washerman");
         }
       });
   }, []);
-  const washerman = JSON.parse(localStorage.getItem("washerman"));
+  // const washerman = JSON.parse(localStorage.getItem("washerman"));
   return (
     <>
       <div
-        style={{ backgroundImage: `url(${img1})` }}
+        style={{ backgroundImage: `url(${washerman.simage || img1})` }}
         className="bg-cover bg-center h-96 w-full bg-blue-500"
       >
         <div class="p-16">
@@ -37,12 +46,11 @@ function Washprofile() {
               </div>
               
             </div>
-            <div class="relative">
-              <div class="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
+            <div class="relative ">
+              <div class="w-48 h-48 border-2 border-black bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
                 <img
                   className="h-48 w-48 rounded-full"
                   src={washerman.image || img}
-                  
                   alt=""
                 />
               </div>
@@ -65,7 +73,7 @@ function Washprofile() {
               <p class="mt-2 text-gray-500 uppercase">
                 {washerman.city} - {washerman.pincode}
               </p>
-              <p class="mt-2 text-gray-500 uppercase">{washerman.occ}</p>
+              <p class="mt-2 text-gray-500 uppercase">Cost per Pair : {washerman.cost}</p>
             </div>
             <div className="content-center ">
               <button

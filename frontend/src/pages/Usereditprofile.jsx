@@ -176,14 +176,7 @@ function Usereditprofile() {
                             />
                           </div>
                           <div class="md:col-span-3">
-                            {/* <label>Profile Photo</label>
-                          <input
-                            class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50 px-3 py-1.5 text-base"
-                            type="file"
-                            id="formFile"
-                            // accept='.jpeg, .png, .jpg'
-                            onChange={(e) => handleFileUpload(e)}
-                          /> */}
+                           
                             <label>Upload Profile Photo</label>
                             <input
                               class="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-neutral-700 outline-none transition duration-300 ease-in-out file:-mx-3 file:-my-1.5 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-1.5 file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[margin-inline-end:0.75rem] file:[border-inline-end-width:1px] hover:file:bg-neutral-200 focus:border-primary focus:bg-white focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none dark:bg-transparent  dark:focus:bg-transparent"
@@ -264,7 +257,11 @@ function convertToBase64(file, maxWidth = 800, maxHeight = 600, quality = 0.7) {
         canvas.height = height;
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, width, height);
-        const compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
+        let compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
+        while (compressedDataUrl.length / 1024 >= 95) {
+          quality -= 0.05;
+          compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
+        }
         resolve(compressedDataUrl);
       };
     };
@@ -273,3 +270,5 @@ function convertToBase64(file, maxWidth = 800, maxHeight = 600, quality = 0.7) {
     };
   });
 }
+
+

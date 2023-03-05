@@ -3,36 +3,70 @@ import Footer from "../Components/Footer";
 import Details from "../Components/Wordertable";
 import Header from "../Components/Wheader";
 import axios from "axios";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 function Waorder() {
-  const navigate=useNavigate();
-  const [orders, setOrders] = useState([]);
   const location = useLocation();
-  const washerman = JSON.parse(localStorage.getItem("washerman"));
+  const navigate = useNavigate();
+  // const washerman=location.state.washerman;
+  const [washerman, setwasherman] = useState([]);
+  const [email, setEmail] = useState();
+  const [orders, setOrders] = useState([]);
+
+  // const washerman = JSON.parse(localStorage.getItem("washerman"));
+  // console.log("washerman unkone ",washerman.email)
+
   useEffect(() => {
     axios
-    .get("http://localhost:5000/api/washerman/check", { withCredentials: true })
-    .then((response) => {console.log("dash");
-      if (response.data.message === "washerman not login"){navigate("/washerman");window.location.reload();}
-      else if(response.data.message === "washerman already login"){navigate("/washerman/order/approve")}
-      });
-    axios
-      .post("http://localhost:5000/api/order/req", { wemail:washerman.email,status: "Under Approval" })
-      .then((res) => {
-        setOrders(res.data.orders);
+      .get("http://localhost:5000/api/washerman/getwash", {
+        withCredentials: true,
       })
-      .catch((err) => console.log(err));
+      .then((response) => {
+        console.log("dash");
+        if (response.data.message) {
+          setwasherman(response.data.message)
+          axios
+            .post("http://localhost:5000/api/order/req", {
+              wemail: response.data.message.email,
+              status: "Under Approval",
+            })
+            .then((res) => {
+              setOrders(res.data.orders);
+            })
+            .catch((err) => console.log(err));
+        } else {
+          navigate("/washerman");
+        }
+      });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/washerman/check", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log("dash");
+        if (response.data.message === "washerman not login") {
+          navigate("/washerman");
+          window.location.reload();
+        } else if (response.data.message === "washerman already login") {
+          navigate("/washerman/order/approve");
+        }
+      });
 
+    // axios
+    // .post("http://localhost:5000/api/order/req", { wemail:email,status: "Under Approval" })
+    // .then((res) => {
+    //   setOrders(res.data.orders);
+    // })
+    // .catch((err) => console.log(err));
+  }, []);
 
-
- 
   return (
     <>
       <div className="min-h-screen">
-        <Header />
+        <Header washerman={washerman} />
         <header className="bg-black shadow">
           <div className="mx-auto text-center">
             <h2 className="font-medium leading-tight py-2 text-4xl mt-0 mb-2 text-blue-600">

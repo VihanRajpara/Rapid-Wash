@@ -1,7 +1,6 @@
-import { Fragment } from "react";
+import { Fragment, useState ,useEffect} from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
-import { PlusSmIcon } from "@heroicons/react/solid";
 import {NavLink} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
@@ -13,9 +12,13 @@ function classNames(...classes) {
 
   
 
-function Header() {
-  const washerman = JSON.parse(localStorage.getItem("washerman"));
+function Header(props) {
+ 
+  const washerman=props.washerman;
+  // console.log("from wheader",washerman)
    const navigate=useNavigate();
+   
+   
    const logout = () => {
     axios
     .get("http://localhost:5000/api/washerman/logout", {
@@ -55,7 +58,7 @@ function Header() {
                         )}
                       </Disclosure.Button>
                     </div>
-                    {/* <div className="flex-shrink-0 flex items-center">
+                    <div className="flex-shrink-0 flex items-center">
                       <img
                         className="block lg:hidden h-8 w-auto"
                         src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
@@ -66,7 +69,7 @@ function Header() {
                         src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
                         alt="Workflow"
                       />
-                    </div> */}
+                    </div>
                     <div className="hidden md:ml-6 md:flex md:space-x-8">
                       
                       {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
@@ -80,7 +83,7 @@ function Header() {
                       </NavLink>
                       <NavLink
                         to="/washerman/order/approve"
-                       
+                       state={washerman}
                         className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                       >
                         Approval Order
@@ -100,7 +103,7 @@ function Header() {
                         Done Order
                       </NavLink>
                       <NavLink
-                        to="/aboutus"
+                        to="About Us"
                        
                         className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                       >
@@ -125,7 +128,7 @@ function Header() {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src={img}
+                              src={washerman.image || img}
                               alt=""
                             />
                           </Menu.Button>
@@ -165,7 +168,7 @@ function Header() {
                               </NavLink>
                             </Menu.Item>
                             <Menu.Item>
-                              <NavLink to="/washerman/edit">
+                              <NavLink to="/washerman/editprofile">
                               {({ active }) => (
                                 <a
                                   href="#"
@@ -202,43 +205,50 @@ function Header() {
               <Disclosure.Panel className="md:hidden">
                 <div className="pt-2 pb-3 space-y-1">
                   {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-                  <NavLink to='/user/dashboard'>
-                  <Disclosure.Button
-                    as="div"
+                 
+                  <NavLink
+                  to='/washerman/dashboard'
+                    
                     className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                   >
                     Dashboard
-                  </Disclosure.Button></NavLink>
-                  <NavLink to='/user/order'>
-                  <Disclosure.Button
-                    as="div"
+                  </NavLink>
+                  <NavLink to='/washerman/order/approve'
                     className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                   >
-                    Team
-                  </Disclosure.Button></NavLink>
-                  <NavLink to='/aboutus'>
-                  <Disclosure.Button
-                    as="a"
-           
+                    Approval Order
+                  </NavLink>
+                  <NavLink to='/washerman/order/pending'
                     className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                   >
-                    Projects
-                  </Disclosure.Button></NavLink>
+                    Pending Order
+                  </NavLink>
+                  <NavLink to='/washerman/order/done'
+                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                  >
+                    Done Order
+                  </NavLink>
+                  <NavLink to='About Us'
+                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                  >
+                    About Us
+                  </NavLink>
+                  
                 </div>
                 <div className="pt-4 pb-3 border-t border-gray-200">
                   <div className="flex items-center px-4 sm:px-6">
                     <div className="flex-shrink-0">
                       <img
                         className="h-10 w-10 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src={washerman.image || img}
                         alt=""
                       />
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium text-gray-300">
+                      <div className="text-base font-medium text-blue-500">
                         {washerman.username}
                       </div>
-                      <div className="text-sm font-medium text-gray-300">
+                      <div className="text-sm font-medium text-blue-500">
                         {washerman.email}
                       </div>
                     </div>
@@ -251,28 +261,23 @@ function Header() {
                     </button>
                   </div>
                   <div className="mt-3 space-y-1">
-                    <Disclosure.Button
-                      as="a"
-                      href="#"
+                    <NavLink
+                      to="/washerman/profile"
                       className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
                     >
-                      Your Profile
-                    </Disclosure.Button>
-                    <NavLink>
-                    <Disclosure.Button
-                      as="a"
-                      
+                      My Profile
+                    </NavLink>
+                    <NavLink
+                      to="/washerman/editprofile"
                       className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
                     >
-                      Settings
-                    </Disclosure.Button></NavLink>
-                    <Disclosure.Button
-                      as="a"
-                      href="#"
+                      Edit Profile
+                    </NavLink>
+                    <NavLink
                       className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6" onClick={logout}
                     >
                       Sign out
-                    </Disclosure.Button>
+                    </NavLink>
                   </div>
                 </div>
               </Disclosure.Panel>

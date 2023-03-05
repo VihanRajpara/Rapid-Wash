@@ -104,10 +104,22 @@ router.post("/book", async (req, res) => {
       const{_id}  = req.body;
       // console.log("this is"+_id)
       const result = await Order.findByIdAndDelete(_id);
+      res.json({message:"delete order"});
      
     } catch (error) {
       console.log(error);
-      res.status(500).send('Internal server error');
+      // res.status(500).send('Internal server error');
+    }
+  });
+
+  router.post('/dashorderdetail',async(req,res)=>{
+    try {
+      const { email } = req.body; // get washerman email from request body
+      const count = await Order.countDocuments({ status: 'Done', wemail: email }); // get count of orders
+      res.status(200).json({ count }); // send response with count of orders
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
     }
   });
 

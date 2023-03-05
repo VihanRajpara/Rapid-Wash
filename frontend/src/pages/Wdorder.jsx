@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 function Wdorder() {
   const navigate=useNavigate();
   const [orders, setOrders] = useState([]);
-  const washerman = JSON.parse(localStorage.getItem("washerman"));
+  const [washerman, setwasherman] = useState([]);
+  // const washerman = JSON.parse(localStorage.getItem("washerman"));
   useEffect(() => {
     axios
     .get("http://localhost:5000/api/washerman/check", { withCredentials: true })
@@ -16,13 +17,26 @@ function Wdorder() {
       if (response.data.message === "washerman not login"){navigate("/washerman");window.location.reload();}
       else if(response.data.message === "washerman already login"){navigate("/washerman/order/done")}
       });
-    axios
-      .post("http://localhost:5000/api/order/req", { wemail:washerman.email,status:"Done" })
+
+      axios
+      .get("http://localhost:5000/api/washerman/getwash", { withCredentials: true })
+      .then((response) => {
+        console.log("dash");
+        if (response.data.message) {
+          setwasherman(response.data.message);
+          axios
+      .post("http://localhost:5000/api/order/req", { wemail:response.data.message.email,status:"Done" })
       .then((res) => {
         setOrders(res.data.orders);
        
       })
       .catch((err) => console.log(err));
+        } else{
+          navigate("/washerman");
+        }
+      });
+
+    
   
   }, []);
 
@@ -30,7 +44,7 @@ function Wdorder() {
   
     <>
       <div className="min-h-screen">
-       <Header/>
+       <Header washerman={washerman}/>
        <header className="bg-black shadow">
           <div className="mx-auto text-center">
             <h2 className="font-medium leading-tight py-2 text-4xl mt-0 mb-2 text-blue-600">

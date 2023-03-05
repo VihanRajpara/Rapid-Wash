@@ -147,7 +147,7 @@ function Header() {
                                       "block px-4 py-2 text-sm text-gray-700"
                                     )}
                                   >
-                                    Your Profile
+                                    My Profile
                                   </a>
                                 )}
                               </NavLink>
@@ -193,45 +193,35 @@ function Header() {
               <Disclosure.Panel className="md:hidden">
                 <div className="pt-2 pb-3 space-y-1">
                   {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-                  <NavLink to="/user/dashboard">
-                    <Disclosure.Button
-                      as="div"
+                  <NavLink to="/user/dashboard"
                       className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                     >
                       Home
-                    </Disclosure.Button>
+                    
                   </NavLink>
-                  <NavLink to="/user/order/approve">
-                    <Disclosure.Button
-                      as="div"
+                  <NavLink to="/user/order/approve"
                       className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                     >
                       Approval Order
-                    </Disclosure.Button>
+                    
                   </NavLink>
-                  <NavLink to="/user/order/pending">
-                    <Disclosure.Button
-                      as="div"
+                  <NavLink to="/user/order/pending"
                       className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                     >
                       Processing Order
-                    </Disclosure.Button>
+                  
                   </NavLink>
-                  <NavLink to="/user/order/done">
-                    <Disclosure.Button
-                      as="div"
+                  <NavLink to="/user/order/done"
                       className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                     >
                       Done Order
-                    </Disclosure.Button>
+                   
                   </NavLink>
-                  <NavLink to="/aboutus">
-                    <Disclosure.Button
-                      as="a"
+                  <NavLink to="/aboutus"
                       className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                     >
-                      Projects
-                    </Disclosure.Button>
+                      About Us
+                    
                   </NavLink>
                 </div>
                 <div className="pt-4 pb-3 border-t border-gray-200">
@@ -239,7 +229,7 @@ function Header() {
                     <div className="flex-shrink-0">
                       <img
                         className="h-10 w-10 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src={user.image||img}
                         alt=""
                       />
                     </div>
@@ -260,29 +250,25 @@ function Header() {
                     </button>
                   </div>
                   <div className="mt-3 space-y-1">
-                    <Disclosure.Button
-                      as="a"
-                      href="#"
+                    <NavLink
+                      to="/user/profile"
                       className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
                     >
                       Your Profile
-                    </Disclosure.Button>
-                    <NavLink>
-                      <Disclosure.Button
-                        as="a"
+                    </NavLink>
+                    <NavLink
+                        to="/user/editprofile"
                         className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
                       >
-                        Settings
-                      </Disclosure.Button>
+                        Edit Profile
+                      
                     </NavLink>
-                    <Disclosure.Button
-                      as="a"
-                      href="#"
+                    <NavLink
                       className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
                       onClick={logout}
                     >
                       Sign out
-                    </Disclosure.Button>
+                    </NavLink>
                   </div>
                 </div>
               </Disclosure.Panel>
