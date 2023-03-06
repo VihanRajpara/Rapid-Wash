@@ -10,8 +10,8 @@ import { useLocation } from "react-router-dom";
 import Header from "../Components/Header";
 
 function Cdashbord(props) {
-  const location=useLocation();
-  const [luser,setLuser]=useState();
+  // const location=useLocation();
+  const [user,setLuser]=useState([]);
   const [area,setArea]=useState("all");
   const navigate =useNavigate();
   const [washerman, setUsers] = useState([]);
@@ -22,7 +22,7 @@ function Cdashbord(props) {
   .get("http://localhost:5000/api/users/check", { withCredentials: true })
   .then((response) => {console.log("dash");
     if (response.data.message === "user not login"){navigate("/user")}
-    else if(response.data.message === "user already login"){}
+    else if(response.data.message === "user already login"){navigate("/user/dashboard");}
     });
 
     axios
@@ -34,12 +34,8 @@ function Cdashbord(props) {
       else if(!response.data.message){}
       });
   }, []);
-  console.log("this is login user",luser);
-//   const encryptedDataFromStorage = localStorage.getItem('my-data');
-// const bytes = CryptoJS.AES.decrypt(encryptedDataFromStorage, 'my-secret-key');
-// const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
- 
-  //Washerman Detail from Database
+  console.log("this is login user",user);
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/washerman/all")
@@ -56,7 +52,7 @@ function Cdashbord(props) {
   return (
     <>
       <div className="min-h-screen">
-       <Header user={luser}/>
+       <Header user={user}/>
        <header className="bg-black shadow">
           <div className="mx-auto text-center">
             <h2 className="font-medium leading-tight py-2 text-4xl mt-0 mb-2 text-blue-600">
@@ -102,8 +98,8 @@ function Cdashbord(props) {
           <div>
             <div className="min-h-screen from-red-300 to-yellow-200 flex justify-center items-center py-20">
               <div className="md:px-8 md:grid md:grid-cols-2 lg:grid-cols-4 gap-8 space-y-4 md:space-y-0">
-                {washerman.map((user) => (
-                  <Washcard key={user._id} user={user} luser={luser} />
+                {washerman.map((wash) => (
+                  <Washcard key={user._id} user={wash} luser={user} />
                 ))}
               </div>
           

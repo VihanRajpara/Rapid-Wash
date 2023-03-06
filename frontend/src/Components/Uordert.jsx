@@ -66,7 +66,7 @@ function Details(order) {
                 </div>
 
                 <div className="relative p-6 flex-auto">
-                  <table class="table table-striped-columns">
+                <table class="table table-striped-columns">
                     <tbody>
                       <tr>
                         <th scope="row">Order id</th>
@@ -88,6 +88,14 @@ function Details(order) {
                       <tr>
                         <th scope="row">Shop Name</th>
                         <td>{order.order.shopname}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Total Pair</th>
+                        <td>{order.order.pair}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Cost per Pair</th>
+                        <td>{order.order.costp}</td>
                       </tr>
                       <tr>
                         <th scope="row">Cost</th>

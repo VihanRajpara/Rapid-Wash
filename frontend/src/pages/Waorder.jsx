@@ -54,13 +54,6 @@ function Waorder() {
           navigate("/washerman/order/approve");
         }
       });
-
-    // axios
-    // .post("http://localhost:5000/api/order/req", { wemail:email,status: "Under Approval" })
-    // .then((res) => {
-    //   setOrders(res.data.orders);
-    // })
-    // .catch((err) => console.log(err));
   }, []);
 
   return (

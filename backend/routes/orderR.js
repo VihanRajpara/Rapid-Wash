@@ -114,14 +114,70 @@ router.post("/book", async (req, res) => {
 
   router.post('/dashorderdetail',async(req,res)=>{
     try {
-      const { email } = req.body; // get washerman email from request body
-      const count = await Order.countDocuments({ status: 'Done', wemail: email }); // get count of orders
-      res.status(200).json({ count }); // send response with count of orders
+      const { email } = req.body;
+      const count = await Order.countDocuments({ status: 'Done', wemail: email });
+      const orders = await Order.find({ status: 'Done', wemail: email }, 'cost'); 
+      const totalCost = orders.reduce((acc, order) => acc + Number(order.cost), 0);
+
+      const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+    const mcount = await Order.countDocuments({
+      status: 'Done',
+      wemail: email,
+      date: { $gte: oneMonthAgo }
+    });
+    const morders = await Order.find({
+      status: 'Done',
+      wemail: email,
+      date: { $gte: oneMonthAgo }
+    });
+    const totalMCost = morders.reduce((acc, order) => acc + Number(order.cost), 0);
+
+      res.status(200).json({ count,totalCost,totalMCost,mcount}); 
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
     }
   });
-
+  router.post('/userorderdetail',async(req,res)=>{
+    try {
+      const { email } = req.body;
+      const count = await Order.countDocuments({ status: 'Done', uemail: email });
+      const orders = await Order.find({ status: 'Done', uemail: email }, 'cost'); 
+      const totalCost = orders.reduce((acc, order) => acc + Number(order.cost), 0);
+      // console.log(email,count,totalCost)
+      res.status(200).json({ count,totalCost}); 
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+  
+  router.post('/orderdetailuemail', async (req, res) => {
+    try {
+      const { wemail } = req.body;
+  
+      const orders = await Order.find({ wemail });
+  
+      const result = {};
+  
+      orders.forEach(order => {
+        const { uemail } = order;
+        if (!result[uemail]) {
+          result[uemail] = 1;
+        } else {
+          result[uemail]++;
+        }
+      });
+  
+      const response = Object.entries(result).map(([uemail, count]) => ({ uemail, count }));
+  
+      res.status(200).json(response);
+  
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
 
 module.exports = router;

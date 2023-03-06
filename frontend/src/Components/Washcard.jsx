@@ -21,7 +21,7 @@ function Washcard({ user, luser }) {
           </p>
         </div>
 
-        <img class="object-cover w-full h-48 mt-2" src={img} alt="NIKE AIR" />
+        <img class="object-cover w-full h-48 mt-2" src={user.simage||img} alt="NIKE AIR" />
 
         <div class="flex items-center justify-between px-4 py-2 bg-gray-800">
           <h1 class="text-lg font-bold text-white">{user.city}</h1>

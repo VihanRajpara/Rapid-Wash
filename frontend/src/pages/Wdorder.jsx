@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../Components/Footer";
 // import requireAuth from "../utils/authWdash";
 import Details from "../Components/Wordertable";
@@ -6,53 +6,60 @@ import Header from "../Components/Wheader";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 function Wdorder() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [washerman, setwasherman] = useState([]);
   // const washerman = JSON.parse(localStorage.getItem("washerman"));
   useEffect(() => {
     axios
-    .get("http://localhost:5000/api/washerman/check", { withCredentials: true })
-    .then((response) => {console.log("dash");
-      if (response.data.message === "washerman not login"){navigate("/washerman");window.location.reload();}
-      else if(response.data.message === "washerman already login"){navigate("/washerman/order/done")}
+      .get("http://localhost:5000/api/washerman/check", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log("dash");
+        if (response.data.message === "washerman not login") {
+          navigate("/washerman");
+          window.location.reload();
+        } else if (response.data.message === "washerman already login") {
+          navigate("/washerman/order/done");
+        }
       });
 
-      axios
-      .get("http://localhost:5000/api/washerman/getwash", { withCredentials: true })
+    axios
+      .get("http://localhost:5000/api/washerman/getwash", {
+        withCredentials: true,
+      })
       .then((response) => {
         console.log("dash");
         if (response.data.message) {
           setwasherman(response.data.message);
           axios
-      .post("http://localhost:5000/api/order/req", { wemail:response.data.message.email,status:"Done" })
-      .then((res) => {
-        setOrders(res.data.orders);
-       
-      })
-      .catch((err) => console.log(err));
-        } else{
+            .post("http://localhost:5000/api/order/req", {
+              wemail: response.data.message.email,
+              status: "Done",
+            })
+            .then((res) => {
+              setOrders(res.data.orders);
+            })
+            .catch((err) => console.log(err));
+        } else {
           navigate("/washerman");
         }
       });
-
-    
-  
   }, []);
 
   return (
-  
     <>
       <div className="min-h-screen">
-       <Header washerman={washerman}/>
-       <header className="bg-black shadow">
+        <Header washerman={washerman} />
+        <header className="bg-black shadow">
           <div className="mx-auto text-center">
             <h2 className="font-medium leading-tight py-2 text-4xl mt-0 mb-2 text-blue-600">
-             Done Order
+              Done Order
             </h2>
           </div>
         </header>
-       <div className="container">
+        <div className="container">
           <div class="overflow-x-auto">
             <div>
               <div class="w-full">
@@ -77,11 +84,10 @@ function Wdorder() {
             </div>
           </div>
         </div>
-
-        </div>
+      </div>
       <Footer />
     </>
-  )
+  );
 }
 
 export default Wdorder;

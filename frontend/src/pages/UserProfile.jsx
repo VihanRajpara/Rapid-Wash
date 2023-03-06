@@ -4,20 +4,40 @@ import axios from "axios";
 
 import img from "../assets/img/user.png";
 export default function UserProfile() {
+  const [totalcount, setTotalCount] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
   const navigate = useNavigate();
-  const [luser, setLuser] = useState("");
+  const [luser, setLuser] = useState([]);
   const goback = () => {
     navigate("/user/dashboard");
   };
   useEffect(() => {
     axios
+  .get("http://localhost:5000/api/users/check", { withCredentials: true })
+  .then((response) => {console.log("dash");
+    if (response.data.message === "user not login"){navigate("/user")}
+    else if(response.data.message === "user already login"){}
+    });
+    axios
       .get("http://localhost:5000/api/users/get", { withCredentials: true })
       .then((response) => {
         if (response.data.message) {
           setLuser(response.data.message);
+          axios
+          .post("http://localhost:5000/api/order/userorderdetail", {
+            email: response.data.message.email,
+          })
+          .then((response) => {
+            setTotalCount(response.data.count);
+            setTotalCost(response.data.totalCost);
+            
+            // console.log("count", response.data.totalMCost);
+          });
         } else if (!response.data.message) {
         }
       });
+
+     
   }, []);
   const user = JSON.parse(localStorage.getItem("user"));
   if (!user) {
@@ -35,11 +55,11 @@ export default function UserProfile() {
           <div class="grid grid-cols-1 md:grid-cols-3">
             <div class="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
               <div>
-                <p class="font-bold text-gray-700 text-xl">22</p>
+                <p class="font-bold text-gray-700 text-xl">{totalcount}</p>
                 <p class="text-gray-400">Order</p>
               </div>
               <div>
-                <p class="font-bold text-gray-700 text-xl">10</p>
+                <p class="font-bold text-gray-700 text-xl">₹ {totalCost}</p>
                 <p class="text-gray-400">Total Cost</p>
               </div>
               

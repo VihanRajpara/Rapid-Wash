@@ -5,16 +5,19 @@ import img from "../assets/img/user.png"
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import logo from "../assets/img/2d.png"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Header() {
+
+
+function Header(props) {
+  const user=props.user;
+  console.log("this is cheader",user.email)
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
-  // console.log(decryptedData);
+
   const logout = () => {
     axios
       .get("http://localhost:5000/api/users/logout", {

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function Usereditprofile() {
   const navigate = useNavigate();
   const [id, setId] = useState();
-  const [luser, setLuser] = useState();
+  const [luser, setLuser] = useState([]);
   const [name, setName] = useState();
   const [contact, setContact] = useState();
   const [email, setEmail] = useState();
@@ -25,6 +25,12 @@ function Usereditprofile() {
   };
 
   useEffect(() => {
+    axios
+  .get("http://localhost:5000/api/users/check", { withCredentials: true })
+  .then((response) => {console.log("dash");
+    if (response.data.message === "user not login"){navigate("/user")}
+    else if(response.data.message === "user already login"){}
+    });
     axios
       .get("http://localhost:5000/api/users/get", { withCredentials: true })
       .then((response) => {
