@@ -73,7 +73,10 @@ function Washprofile() {
               <p class="mt-2 text-gray-500 uppercase">
                 {washerman.city} - {washerman.pincode}
               </p>
-              <p class="mt-2 text-gray-500 uppercase">Cost per Pair : {washerman.cost}</p>
+              <p class="mt-2 text-gray-500 gap-2 uppercase">Normal Wash : ₹ {washerman.cost}</p>
+              <p class="mt-2 text-gray-500 uppercase">Hard Wash : ₹ {washerman.hw}</p>
+              <p class="mt-2 text-gray-500 uppercase">Dry Cleaning : ₹ {washerman.dc}</p>
+              <p class="mt-2 text-gray-500 uppercase">Only Iron : ₹ {washerman.oi}</p>
             </div>
             <div className="content-center ">
               <button

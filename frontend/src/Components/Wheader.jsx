@@ -1,40 +1,34 @@
-import { Fragment, useState ,useEffect} from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
-import {NavLink} from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import img from "../assets/img/user.png"
+import img from "../assets/img/user.png";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-  
-
 function Header(props) {
- 
-  const washerman=props.washerman;
+  const washerman = props.washerman;
   // console.log("from wheader",washerman)
-   const navigate=useNavigate();
-   
-   
-   const logout = () => {
-    axios
-    .get("http://localhost:5000/api/washerman/logout", {
-      withCredentials: true,
-    })
-    .then((res) => {
-      console.log(res.data.message)
-      if(res.data.message==='Logged out successfully'){
-        localStorage.clear();
-        navigate('/washerman'); 
-      }
+  const navigate = useNavigate();
 
-    })
-    .catch((err) => console.log(err));
-    
-  }
+  const logout = () => {
+    axios
+      .get("http://localhost:5000/api/washerman/logout", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data.message);
+        if (res.data.message === "Logged out successfully") {
+          localStorage.clear();
+          navigate("/washerman");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <div>
@@ -71,15 +65,12 @@ function Header(props) {
                       />
                     </div>
                     <div className="hidden md:ml-6 md:flex md:space-x-8">
-                      
                       {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                       <NavLink
                         to="/washerman/dashboard"
-                       
                         className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
- 
                       >
-                       Dashboard
+                        Dashboard
                       </NavLink>
                       <NavLink
                         to="/washerman/order/approve"
@@ -89,21 +80,18 @@ function Header(props) {
                       </NavLink>
                       <NavLink
                         to="/washerman/order/pending"
-                       
                         className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                       >
                         Pending Order
                       </NavLink>
                       <NavLink
                         to="/washerman/order/done"
-                       
                         className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                       >
                         Done Order
                       </NavLink>
                       <NavLink
                         to="About Us"
-                       
                         className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                       >
                         About Us
@@ -112,14 +100,6 @@ function Header(props) {
                   </div>
                   <div className="flex items-center">
                     <div className="hidden md:ml-4 md:flex-shrink-0 md:flex md:items-center">
-                      <button
-                        type="button"
-                        className="bg-black p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="h-6 w-6" aria-hidden="true" />
-                      </button>
-
                       {/* Profile dropdown */}
                       <Menu as="div" className="ml-3 relative">
                         <div>
@@ -142,43 +122,39 @@ function Header(props) {
                           leaveTo="transform opacity-0 scale-95"
                         >
                           <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <Menu.Item>
-                             
-                                <p
-                                  className="bg-gray-100 block px-4 py-2 text-sm text-blue-500"
-                                
-                                >
+                            <Menu.Item>
+                              <p className="bg-gray-100 block px-4 py-2 text-sm text-blue-500">
                                 {washerman.email}
-                            </p>
+                              </p>
                             </Menu.Item>
                             <Menu.Item>
-                              <NavLink to='/washerman/profile'>
-                              {({ active }) => (
-                                <a
-                                  href="#"
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  Your Profile
-                                </a>
-                              )}
+                              <NavLink to="/washerman/profile">
+                                {({ active }) => (
+                                  <a
+                                    href="#"
+                                    className={classNames(
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700"
+                                    )}
+                                  >
+                                    Your Profile
+                                  </a>
+                                )}
                               </NavLink>
                             </Menu.Item>
                             <Menu.Item>
                               <NavLink to="/washerman/editprofile">
-                              {({ active }) => (
-                                <a
-                                  href="#"
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  Settings
-                                </a>
-                              )}
+                                {({ active }) => (
+                                  <a
+                                    href="#"
+                                    className={classNames(
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700"
+                                    )}
+                                  >
+                                    Settings
+                                  </a>
+                                )}
                               </NavLink>
                             </Menu.Item>
                             <Menu.Item>
@@ -187,7 +163,8 @@ function Header(props) {
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
                                     "block px-4 py-2 text-sm text-gray-700"
-                                  )}  onClick={logout}
+                                  )}
+                                  onClick={logout}
                                 >
                                   Sign out
                                 </div>
@@ -204,35 +181,37 @@ function Header(props) {
               <Disclosure.Panel className="md:hidden">
                 <div className="pt-2 pb-3 space-y-1">
                   {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-                 
+
                   <NavLink
-                  to='/washerman/dashboard'
-                    
+                    to="/washerman/dashboard"
                     className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                   >
                     Dashboard
                   </NavLink>
-                  <NavLink to='/washerman/order/approve'
+                  <NavLink
+                    to="/washerman/order/approve"
                     className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                   >
                     Approval Order
                   </NavLink>
-                  <NavLink to='/washerman/order/pending'
+                  <NavLink
+                    to="/washerman/order/pending"
                     className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                   >
                     Pending Order
                   </NavLink>
-                  <NavLink to='/washerman/order/done'
+                  <NavLink
+                    to="/washerman/order/done"
                     className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                   >
                     Done Order
                   </NavLink>
-                  <NavLink to='About Us'
+                  <NavLink
+                    to="About Us"
                     className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
                   >
                     About Us
                   </NavLink>
-                  
                 </div>
                 <div className="pt-4 pb-3 border-t border-gray-200">
                   <div className="flex items-center px-4 sm:px-6">
@@ -251,13 +230,7 @@ function Header(props) {
                         {washerman.email}
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      className="ml-auto flex-shrink-0 bg-black p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
+                    
                   </div>
                   <div className="mt-3 space-y-1">
                     <NavLink
@@ -273,7 +246,8 @@ function Header(props) {
                       Edit Profile
                     </NavLink>
                     <NavLink
-                      className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6" onClick={logout}
+                      className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
+                      onClick={logout}
                     >
                       Sign out
                     </NavLink>

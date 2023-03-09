@@ -81,6 +81,9 @@ function Washerman() {
           shopname: sigsname,
           contact: sigcon,
           cost: sigcost,
+          hw:1.3*sigcost,
+          dc:0.8*sigcost,
+          oi:0.6*sigcost,
         })
         .then((response) => {
           if (response.data.message === "Signup successful") {

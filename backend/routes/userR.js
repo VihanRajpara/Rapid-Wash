@@ -128,6 +128,7 @@ router.post("/update", async (req, res) => {
       user.city=city;
       user.occ=occ;
       if(postImage){user.image=postImage}
+     
       
      user.save();
      res.json({ message: "edit user" ,user:user});

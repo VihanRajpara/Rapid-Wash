@@ -17,6 +17,9 @@ function Washeditprofile(){
     const [pincode, setPin] = useState();
     const [shopname, setShopname] = useState();
     const [cost,setCost]=useState();
+    const [hw,setHw]=useState();
+    const [dc,setDc]=useState();
+    const [oi,setOi]=useState();
     const [postImage, setPostImage] = useState();
     const [postsImage, setPostsImage] = useState();
 
@@ -48,6 +51,9 @@ function Washeditprofile(){
         shopname:shopname,
         postImage:postImage,
         postsImage:postsImage,
+        hw:hw,
+        oi:oi,
+        dc:dc,
       }).then((response) => {
         if (response.data.message === "edit washerman") {
           console.log("done update", response.data.washerman);
@@ -77,7 +83,10 @@ function Washeditprofile(){
           setPin(response.data.message.pincode);
           setShopname(response.data.message.shopname);
           setId(response.data.message._id);
-          setCost(response.data.message.cost)
+          setCost(response.data.message.cost);
+          setHw(response.data.message.hw)
+          setDc(response.data.message.dc)
+          setOi(response.data.message.oi)
         } else if (!response.data.message) {
         }
       });
@@ -180,11 +189,11 @@ function Washeditprofile(){
                             />
                           </div>
                           <div class="md:col-span-2">
-                            <label for="zipcode">Shopname</label>
+                            <label for="Shopname">Shopname</label>
                             <input
                               type="text"
-                              name="occupation"
-                              id="occupation"
+                              name="Shopname"
+                              id="Shopname"
                               class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                               placeholder="Your Shopname"
                               value={shopname}
@@ -192,15 +201,54 @@ function Washeditprofile(){
                             />
                           </div>
                           <div class="md:col-span-1">
-                            <label for="zipcode">Cost</label>
+
+                          </div>
+                          <div class="md:col-span-1">
+                            <label for="normalcost">Normal Cost</label>
                             <input
                               type="text"
-                              name="occupation"
-                              id="occupation"
+                              name="normalcost"
+                              id="normalcost"
                               class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                               placeholder="Your Cost"
                               value={cost}
                               onChange={(event) => setCost(event.target.value)}
+                            />
+                          </div>
+                          <div class="md:col-span-1">
+                            <label for="hw">Hard wash Cost</label>
+                            <input
+                              type="text"
+                              name="hw"
+                              id="hw"
+                              class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                              placeholder="Your Cost"
+                              value={hw}
+                              onChange={(event) => setHw(event.target.value)}
+                            />
+                          </div>
+                          <div class="md:col-span-1">
+                            <label for="dc">Dey Clean Cost</label>
+                            <input
+                              type="text"
+                              name="dc"
+                              id="dc"
+                              class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                              placeholder="Your Cost"
+                              value={dc}
+                              onChange={(event) => setDc(event.target.value)}
+                            />
+                          </div>
+                          <div class="md:col-span-1">
+                            <label for="oi">Only Iron Cost</label>
+                            <input
+                              type="text"
+                              name="oi"
+                              id="oi"
+                              class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                              placeholder="Your Cost"
+                              value={oi}
+                              onChange={(event) => setOi(event.target.value)}
                             />
                           </div>
                           <div class="md:col-span-3">

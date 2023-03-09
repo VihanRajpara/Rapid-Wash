@@ -19,6 +19,10 @@ function OrderDetail() {
   const [wemail, setWemail] = useState(location.state.order.wemail);
   const [shopname, setshopname] = useState(location.state.order.shopname);
   // const coost = (location.state.order.cost/location.state.order.pair);
+  const [type,setType]=useState(location.state.order.type);
+  const [cost,setCost]=useState(location.state.order.costp);
+  
+
   axios
   .get("http://localhost:5000/api/users/check", { withCredentials: true })
   .then((response) => {console.log("dash");
@@ -53,7 +57,7 @@ function OrderDetail() {
           address: address,
           city: city,
           pincode:pincode,
-          cost: (location.state.order.cost/location.state.order.pair) * cloth,
+          cost: cost * cloth,
           pair:cloth,
         })
         .then((response) => {
@@ -148,7 +152,7 @@ function OrderDetail() {
                         />
                       </div>
 
-                      <div class="md:col-span-2">
+                      <div class="md:col-span-1">
                         <label for="zipcode">Zipcode</label>
                         <input
                           type="text"
@@ -160,7 +164,7 @@ function OrderDetail() {
                           // onChange={(event) => setPin(event.target.value)}
                         />
                       </div>
-                      <div class="md:col-span-3">
+                      <div class="md:col-span-1">
                         <label for="soda">How many Pair?</label>
                         <div class="h-10 w-28 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
                           <input
@@ -173,6 +177,17 @@ function OrderDetail() {
                             onChange={(event) => setCloth(event.target.value)}
                           />
                         </div>
+                      </div>
+                      <div class="md:col-span-3">
+                      <label for="type">Type</label>
+                        <input
+                          type="text"
+                          name="type"
+                          id="type"
+                          class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                          placeholder=""
+                          value={type}
+                        /><p class="text-red-500">If you want change type Rebook your Order</p>
                       </div>
 
                       <div class="md:col-span-5 text-right">

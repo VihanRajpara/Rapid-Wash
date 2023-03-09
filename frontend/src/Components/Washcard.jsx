@@ -55,13 +55,6 @@ function Washcard({ user, luser }) {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  {/* <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                    I always felt like I could do anything. That’s the main
-                    thing people are controlled by! Thoughts- their perception
-                    of themselves! They're slowed down by their perception of
-                    themselves. If you're taught you can’t do anything, you
-                    won’t do anything. I was taught I could do everything.
-                  </p> */}
                   <table class="table table-striped-columns">
                     <tbody>
                       <tr>
@@ -90,8 +83,18 @@ function Washcard({ user, luser }) {
                     
                       </tr>
                       <tr>
-                        <th scope="row">Cost per pair</th>
-                        <td>{user.cost}</td>
+                        <th scope="row">&nbsp;Cost per pair</th>
+                        <td><table>
+                            <tr scope="row">
+                              <td>Normal Wash : {user.cost}</td>
+                              <td>Hard wash : {user.hw}</td>
+                            </tr>
+                            <tr scope="row">
+                              <td>Only Dry Cleaning : {user.dc}</td>
+                              <td>Only Iron : {user.oi}</td>
+                            </tr>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,19 +20,44 @@ function OrderDetail() {
   const [ucity, setuCity] = useState(location.state.luser.city);
   const [wemail, setWemail] = useState(location.state.washerman.email);
   const [shopname, setshopname] = useState(location.state.washerman.shopname);
-  // const [costp, setcostp] = useState(location.state.washerman.cost);
-  const cost = location.state.washerman.cost;
+  const [type,setType]=useState("Normal Wash");
+  const nw = location.state.washerman.cost;
+  const hw = location.state.washerman.hw;
+  const dc = location.state.washerman.dc;
+  const oi = location.state.washerman.oi;
+  const [cost,setCost]=useState(nw);
+
+  const handleTypeChange = (event) => {
+    setType(event.target.value);
+
+    if (event.target.value === 'Normal Wash') {
+      setCost(nw);
+      
+    } else if (event.target.value === 'Hard Wash') {
+      setCost(hw);
+    } else if (event.target.value === 'Only Dry Clean') {
+      setCost(dc);
+    } else if (event.target.value === 'Only Iron') {
+      setCost(oi);
+    }
+    console.log("this is final cost",cost);
+  };
+  
   const Close = () => {
     navigate("/user/dashboard");
   };
   axios
-  .get("http://localhost:5000/api/users/check", { withCredentials: true })
-  .then((response) => {console.log("dash");
-    if (response.data.message === "user not login"){navigate("/user")}
-    else if(response.data.message === "user already login"){}
+    .get("http://localhost:5000/api/users/check", { withCredentials: true })
+    .then((response) => {
+      console.log("dash");
+      if (response.data.message === "user not login") {
+        navigate("/user");
+      } else if (response.data.message === "user already login") {
+      }
     });
 
   const handleOrder = async (Sevent) => {
+    
     Sevent.preventDefault();
     if (
       name === "" ||
@@ -44,8 +69,8 @@ function OrderDetail() {
       cloth === ""
     ) {
       toast.error("Fields are required");
-    } 
-    else {
+    } else {
+      
       await axios
         .post("http://localhost:5000/api/order/book", {
           username: name,
@@ -56,9 +81,10 @@ function OrderDetail() {
           address: address,
           city: city,
           pincode: pincode,
-          costp:cost,
+          costp: cost,
           cost: cost * cloth,
           pair: cloth,
+          type:type,
         })
         .then((response) => {
           if (response.data.message === "Booked successful") {
@@ -82,7 +108,7 @@ function OrderDetail() {
               <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
                   <div class="text-gray-600">
-                    <p class="font-medium text-lg">Order Details</p>
+                    <p class="font-medium text-lg">Book Your Order</p>
                     <p>Please fill out all the fields.</p>
                   </div>
 
@@ -153,7 +179,7 @@ function OrderDetail() {
                         />
                       </div>
 
-                      <div class="md:col-span-2">
+                      <div class="md:col-span-1">
                         <label for="zipcode">Zipcode</label>
                         <input
                           type="text"
@@ -165,9 +191,9 @@ function OrderDetail() {
                           // onChange={(event) => setPin(event.target.value)}
                         />
                       </div>
-                      <div class="md:col-span-3">
-                        <label for="soda">How many Pair?</label>
-                        <div class="h-10 w-28 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                      <div class="md:col-span-1">
+                        <label for="cloth">How many Pair?</label>
+                        <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
                           <input
                             type="number"
                             name="cloth"
@@ -177,6 +203,19 @@ function OrderDetail() {
                             value={cloth}
                             onChange={(event) => setCloth(event.target.value)}
                           />
+                        </div>
+                      </div>
+                      <div class="md:col-span-2">
+                        <label >Choose Your Type</label>
+                        <div>
+                          <select
+                            class="h-10 w-40 bg-gray-50 flex border border-gray-200 rounded items-center mt-1" onChange={handleTypeChange}
+                          >
+                            <option value="Normal Wash" selected>Normal Wash</option>
+                            <option value="Hard Wash">Hard Wash</option>
+                            <option value="Only Dry Clean">Only Dry Clean</option>
+                            <option value="Only Iron">Only Iron</option>
+                          </select>
                         </div>
                       </div>
 
@@ -212,13 +251,18 @@ function OrderDetail() {
               <div class="flex flex-col p-4 rounded-lg shadow bg-white">
                 <div class="flex">
                   <div>
-                  <svg class="w-6 h-6 fill-current text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                    <svg
+                      class="w-6 h-6 fill-current text-blue-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M0 0h24v24H0V0z" fill="none" />
+                      <path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                    </svg>
                   </div>
 
                   <div class="ml-3">
-                    <h2 class="font-semibold text-gray-800">
-                      Book Your Order
-                    </h2>
+                    <h2 class="font-semibold text-gray-800">Book Your Order</h2>
                     <p class="mt-2 text-sm text-gray-600 leading-relaxed">
                       Are You Sure?
                     </p>

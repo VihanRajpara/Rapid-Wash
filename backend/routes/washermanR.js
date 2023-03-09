@@ -14,7 +14,7 @@ router.post("/signup", async (req, res) => {
       pincode,
       shopname,
       contact,
-      cost,
+      cost,hw,dc,oi
     } = req.body;
     const us = await Washerman.findOne({ email });
     if (!us) {
@@ -27,7 +27,7 @@ router.post("/signup", async (req, res) => {
         pincode,
         shopname,
         contact,
-        cost,
+        cost,hw,dc,oi
       });
       await user.save();
       res.json({ message: "Signup successful", washerman: user });
@@ -125,7 +125,7 @@ router.get('/getwash',async (req, res) => {
 
 router.post('/update',async (req, res) => {
   try{
-    const{_id,username,contact,pincode,address,shopname,city,cost,postImage,postsImage}=req.body;
+    const{_id,username,contact,pincode,address,shopname,city,cost,postImage,postsImage,hw,dc,oi}=req.body;
     Washerman.findById(_id,(err,washerman)=>{
       washerman.username=username;
       washerman.contact=contact;
@@ -134,6 +134,9 @@ router.post('/update',async (req, res) => {
       washerman.shopname=shopname;
       washerman.city=city;
       washerman.cost=cost;
+      washerman.hw=hw;
+      washerman.oi=oi;
+      washerman.dc=dc;
       if(postImage){
         washerman.image=postImage;
       }if(postsImage){

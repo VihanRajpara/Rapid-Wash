@@ -40,6 +40,18 @@ const userSchema = new Schema({
     type:String,
     require:true
   },
+  hw:{
+    type:String,
+    require:true
+  },
+  dc:{
+    type:String,
+    require:true
+  },
+  oi:{
+    type:String,
+    require:true
+  },
   token:{
     type:String,
   },

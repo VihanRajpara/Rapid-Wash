@@ -18,6 +18,7 @@ import UserProfile from "./pages/UserProfile";
 import Usereditprofile from "./pages/Usereditprofile"
 import Washprofile from "./pages/Washprofile";
 import Washeditprofile from "./pages/Washeditprofile"
+// import Chart from "./pages/chart";
 function App() {
   return (
     <>
@@ -44,6 +45,7 @@ function App() {
           <Route path="/user/editprofile" element={<Usereditprofile />} />
           <Route path="/washerman/profile" element={<Washprofile />} />
           <Route path="/washerman/editprofile" element={<Washeditprofile />} />
+          {/* <Route path="/w" element={<Chart />} /> */}
           </Routes>
         </div>
       {/* </Router> */}

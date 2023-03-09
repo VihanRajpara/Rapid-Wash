@@ -1,21 +1,19 @@
 import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
-import img from "../assets/img/user.png"
+import img from "../assets/img/user.png";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import logo from "../assets/img/2d.png"
+import logo from "../assets/img/2d.png";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-
-
 function Header(props) {
-  const user=props.user;
-  console.log("this is cheader",user.email)
+  const user = props.user;
+  console.log("this is cheader", user.email);
   const navigate = useNavigate();
 
   const logout = () => {
@@ -103,14 +101,6 @@ function Header(props) {
                   </div>
                   <div className="flex items-center">
                     <div className="hidden md:ml-4 md:flex-shrink-0 md:flex md:items-center">
-                      <button
-                        type="button"
-                        className="bg-black p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="h-6 w-6" aria-hidden="true" />
-                      </button>
-
                       {/* Profile dropdown */}
                       <Menu as="div" className="ml-3 relative">
                         <div>
@@ -118,7 +108,7 @@ function Header(props) {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src={user.image||img}
+                              src={user.image || img}
                               alt=""
                             />
                           </Menu.Button>
@@ -139,10 +129,7 @@ function Header(props) {
                               </p>
                             </Menu.Item>
                             <Menu.Item>
-                              <NavLink
-                                to="/user/profile "
-                               
-                              >
+                              <NavLink to="/user/profile ">
                                 {({ active }) => (
                                   <a
                                     className={classNames(
@@ -156,20 +143,18 @@ function Header(props) {
                               </NavLink>
                             </Menu.Item>
                             <Menu.Item>
-                            <NavLink
-                                to="/user/editprofile"
-                              >
-                              {({ active }) => (
-                                <a
-                                  href="#"
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  Edit Profile
-                                </a>
-                              )}
+                              <NavLink to="/user/editprofile">
+                                {({ active }) => (
+                                  <a
+                                    href="#"
+                                    className={classNames(
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700"
+                                    )}
+                                  >
+                                    Edit Profile
+                                  </a>
+                                )}
                               </NavLink>
                             </Menu.Item>
                             <Menu.Item>
@@ -196,35 +181,35 @@ function Header(props) {
               <Disclosure.Panel className="md:hidden">
                 <div className="pt-2 pb-3 space-y-1">
                   {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-                  <NavLink to="/user/dashboard"
-                      className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
-                    >
-                      Home
-                    
+                  <NavLink
+                    to="/user/dashboard"
+                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                  >
+                    Home
                   </NavLink>
-                  <NavLink to="/user/order/approve"
-                      className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
-                    >
-                      Approval Order
-                    
+                  <NavLink
+                    to="/user/order/approve"
+                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                  >
+                    Approval Order
                   </NavLink>
-                  <NavLink to="/user/order/pending"
-                      className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
-                    >
-                      Processing Order
-                  
+                  <NavLink
+                    to="/user/order/pending"
+                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                  >
+                    Processing Order
                   </NavLink>
-                  <NavLink to="/user/order/done"
-                      className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
-                    >
-                      Done Order
-                   
+                  <NavLink
+                    to="/user/order/done"
+                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                  >
+                    Done Order
                   </NavLink>
-                  <NavLink to="/aboutus"
-                      className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
-                    >
-                      About Us
-                    
+                  <NavLink
+                    to="/aboutus"
+                    className=" text-white hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium sm:pl-5 sm:pr-6"
+                  >
+                    About Us
                   </NavLink>
                 </div>
                 <div className="pt-4 pb-3 border-t border-gray-200">
@@ -232,7 +217,7 @@ function Header(props) {
                     <div className="flex-shrink-0">
                       <img
                         className="h-10 w-10 rounded-full"
-                        src={user.image||img}
+                        src={user.image || img}
                         alt=""
                       />
                     </div>
@@ -244,13 +229,6 @@ function Header(props) {
                         {user.email}
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      className="ml-auto flex-shrink-0 bg-black p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
                   </div>
                   <div className="mt-3 space-y-1">
                     <NavLink
@@ -260,11 +238,10 @@ function Header(props) {
                       Your Profile
                     </NavLink>
                     <NavLink
-                        to="/user/editprofile"
-                        className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
-                      >
-                        Edit Profile
-                      
+                      to="/user/editprofile"
+                      className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
+                    >
+                      Edit Profile
                     </NavLink>
                     <NavLink
                       className="block px-4 py-2 text-base font-medium text-white hover:text-gray-700 sm:px-6"
